@@ -1,16 +1,19 @@
+// eslint.config.ts
 import js from "@eslint/js";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 import importPlugin from "eslint-plugin-import";
+import prettierConfig from "eslint-config-prettier";
 import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
   globalIgnores(["dist"]),
 
   {
-    files: ["**/*.{ts,tsx}"],
+    files: ["src/**/*.{ts,tsx}"],
+    ignores: ["vite.config.ts"],
 
     languageOptions: {
       ecmaVersion: 2020,
@@ -18,9 +21,7 @@ export default defineConfig([
       globals: globals.browser,
       parser: tseslint.parser,
       parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
+        ecmaFeatures: { jsx: true },
         project: "./tsconfig.app.json",
       },
     },
@@ -34,7 +35,7 @@ export default defineConfig([
       ...tseslint.configs.recommended,
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
-      "prettier",
+      prettierConfig,
     ],
 
     rules: {
@@ -74,5 +75,15 @@ export default defineConfig([
         },
       },
     },
+  },
+
+  {
+    files: ["vite.config.ts", "*.config.{ts,js}"],
+    languageOptions: {
+      ecmaVersion: 2020,
+      sourceType: "module",
+      globals: globals.node,
+    },
+    extends: [js.configs.recommended, prettierConfig],
   },
 ]);
