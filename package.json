@@ -9,7 +9,10 @@
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx",
     "format": "prettier --write .",
-    "test": "vitest"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:ci": "vitest run --coverage",
+    "quality": "pnpm run typecheck && pnpm run lint && pnpm run test:ci"
   },
   "dependencies": {
     "react": "^19.2.0",
