@@ -14,5 +14,5 @@ jobs:
       typecheck-command: pnpm tsc --noEmit
       lint-command: pnpm lint
       format-command: pnpm prettier --check .
-      test-command: pnpm test -- --coverage --run
+      test-command: pnpm vitest run --coverage
       coverage-path: coverage
