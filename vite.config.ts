@@ -11,6 +11,9 @@ export default defineConfig({
       reporter: ["text", "html", "lcov"],
       reportsDirectory: "./coverage",
 
+      all: true,
+      include: ["src/**/*.{ts,tsx}"],
+
       thresholds: {
         lines: 80,
         functions: 80,
