@@ -1,0 +1,18 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main, dev ]
+  push:
+    branches: [ main, dev ]
+
+jobs:
+  frontend-quality:
+    uses: santiago-garrote/workflows/.github/workflows/frontend-code-quality.yaml@v1
+    with:
+      working-directory: frontend
+      typecheck-command: pnpm tsc --noEmit
+      lint-command: pnpm lint
+      format-command: pnpm prettier --check .
+      test-command: pnpm test -- --coverage --run
+      coverage-path: coverage
