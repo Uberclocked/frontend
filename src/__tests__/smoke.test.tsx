@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 
-import App from "../App.tsx";
+import App from "../app/App.tsx";
 
 describe("App smoke test", () => {
   it("renders without crashing", () => {
