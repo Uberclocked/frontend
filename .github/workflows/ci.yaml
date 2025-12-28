@@ -10,9 +10,9 @@ jobs:
   frontend-quality:
     uses: santiago-garrote/workflows/.github/workflows/frontend-code-quality.yaml@v1
     with:
-      working-directory: frontend
-      typecheck-command: pnpm tsc --noEmit
-      lint-command: pnpm lint
-      format-command: pnpm prettier --check .
-      test-command: pnpm vitest run --coverage
-      coverage-path: coverage
+      working_directory: frontend
+      typecheck_command: pnpm tsc --noEmit
+      lint_command: pnpm lint
+      format_command: pnpm prettier --check .
+      test_command: pnpm vitest run --coverage
+      coverage_path: coverage
