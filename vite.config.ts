@@ -21,10 +21,7 @@ export default defineConfig({
         statements: 80,
       },
 
-      exclude: [
-        "src/main.tsx",
-        "src/vite-env.d.ts",
-      ],
+      exclude: ["src/main.tsx", "src/vite-env.d.ts"],
     },
   },
 });

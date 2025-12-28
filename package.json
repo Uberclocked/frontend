@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:ci": "vitest run --coverage",
-    "quality": "pnpm run typecheck && pnpm run lint && pnpm run test:ci"
+    "quality": "pnpm run typecheck && pnpm run lint && pnpm prettier --check . && pnpm run test:ci"
   },
   "dependencies": {
     "react": "^19.2.0",
