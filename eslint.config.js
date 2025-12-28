@@ -1,3 +1,4 @@
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
 // eslint.config.ts
 import js from "@eslint/js";
 import globals from "globals";
@@ -9,7 +10,7 @@ import prettierConfig from "eslint-config-prettier";
 import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
-  globalIgnores(["dist", "coverage", "node_modules"]),
+  globalIgnores(["dist", "coverage", "node_modules", "stories", ".storybook"]),
 
   {
     files: ["src/**/*.{ts,tsx}"],
