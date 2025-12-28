@@ -9,6 +9,7 @@ The goal is to keep **routing, UI, business logic, and infrastructure concerns c
 
 ## `src/` Directory Layout
 
+```text
 src/
 ├── app/
 │ ├── App.tsx
@@ -77,8 +78,8 @@ src/
 └── tests/
 ├── setup.ts
 └── mocks.ts
-
 ---
+```
 
 ## Folder Responsibilities
 
