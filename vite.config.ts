@@ -13,7 +13,11 @@ const dirname =
 
 export default defineConfig({
   plugins: [react()],
-
+  resolve: {
+    alias: {
+      "@": path.resolve(dirname, "src"),
+    },
+  },
   test: {
     globals: true,
     environment: "jsdom",

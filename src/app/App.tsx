@@ -1,5 +1,10 @@
+import DynamicFormBuilder from "@/components/common/DynamicFormBuilder";
+
 function App() {
-  return <h1>E-Commerce</h1>;
+  return (
+    <div className="min-h-screen w-full flex flex-col">
+      <DynamicFormBuilder />
+    </div>);
 }
 
 export default App;
