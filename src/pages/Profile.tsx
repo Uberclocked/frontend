@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 
 import { fetchWithAuth } from "../services/api";
-import type { UserDataDto } from "../user/types/UserDataDto";
+import type { UserDataDto } from "../types/UserDataDto.ts";
 
 export default function Profile() {
     const { isAuthenticated, getAccessTokenSilently, logout } = useAuth0();

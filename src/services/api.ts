@@ -17,7 +17,7 @@ export async function fetchWithAuth<T>(
     }
 
     if (res.status === 204) {
-        return null as T;
+        return null as T; 
     }
 
     return res.json();

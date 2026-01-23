@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 export default function NavBar() {
     const {
@@ -15,6 +15,9 @@ export default function NavBar() {
 
     return (
         <nav style={{ display: "flex", gap: "1rem", padding: "1rem" }}>
+            <Link to="/">Home</Link>
+            <Link to="/posts">Marketplace</Link>
+
             {!isAuthenticated && (
                 <>
                     <button
@@ -37,6 +40,14 @@ export default function NavBar() {
 
             {isAuthenticated && (
                 <>
+                    <button onClick={() => navigate("/posts/create")}>
+                        Create post
+                    </button>
+
+                    <button onClick={() => navigate("/posts/me")}>
+                        My posts
+                    </button>
+
                     <button
                         onClick={() =>
                             logout({
@@ -50,6 +61,7 @@ export default function NavBar() {
                     <button onClick={() => navigate("/profile")}>
                         Go to Profile
                     </button>
+                    <button onClick={() => navigate("/create-company")}>Create Company</button>
                 </>
             )}
         </nav>
