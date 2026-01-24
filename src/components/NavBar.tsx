@@ -12,11 +12,17 @@ export default function NavBar() {
     const navigate = useNavigate();
 
     if (isLoading) return null;
-
     return (
         <nav style={{ display: "flex", gap: "1rem", padding: "1rem" }}>
             <Link to="/">Home</Link>
             <Link to="/posts">Marketplace</Link>
+
+            {isAuthenticated && (
+                <>
+                    <Link to="/cart">Cart</Link>
+                    <Link to="/purchases/me">My purchases</Link>
+                </>
+            )}
 
             {!isAuthenticated && (
                 <>
@@ -40,6 +46,18 @@ export default function NavBar() {
 
             {isAuthenticated && (
                 <>
+                    <button onClick={() => navigate("/cart")}>
+                        🛒 Cart
+                    </button>
+
+                    {/* Compras usuario */}
+                    <button onClick={() => navigate("/purchases/me")}>
+                        🧾 Mis compras
+                    </button>
+
+                    <button onClick={() => navigate("/admin/purchases")}>
+                            Admin compras
+                    </button>
                     <button onClick={() => navigate("/posts/create")}>
                         Create post
                     </button>
@@ -63,6 +81,7 @@ export default function NavBar() {
                     </button>
                     <button onClick={() => navigate("/create-company")}>Create Company</button>
                 </>
+
             )}
         </nav>
     );

@@ -1,16 +1,20 @@
 import { Routes, Route } from "react-router-dom";
 
 
+
 import AuthCallback from "../src/components/AuthCallback.tsx";
 
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminPurchasesPage from "./pages/AdminPurchase";
+import CartPage from "./pages/Cart.tsx";
 import CreateCompanyPage from "./pages/CreateCompany.tsx";
 import CreatePostPage from "./pages/CreatePost.tsx";
 import Home from "./pages/Home";
 import MyPosts from "./pages/MyPosts.tsx";
 import PostsFeed from "./pages/PostsFeed.tsx";
 import Profile from "./pages/Profile";
+import PurchasesPage from "./pages/Purchase";
 
 
 function App() {
@@ -53,6 +57,33 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <MyPosts />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/cart"
+                    element={
+                        <ProtectedRoute>
+                            <CartPage />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/purchases/me"
+                    element={
+                        <ProtectedRoute>
+                            <PurchasesPage />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/admin/purchases"
+                    element={
+                        <ProtectedRoute>
+                            <AdminPurchasesPage />
                         </ProtectedRoute>
                     }
                 />
