@@ -1,6 +1,6 @@
 packages:
-  - "."        # root
-  - "server"   # server folder
+  - "." # root
+  - "server" # server folder
 
 ignoredBuiltDependencies:
   - "@swc/core"
