@@ -1,14 +1,31 @@
 import type { StorybookConfig } from "@storybook/react-vite";
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(ts|tsx)"],
+
   addons: [
-    "@chromatic-com/storybook",
-    "@storybook/addon-vitest",
+    "@storybook/addon-essentials",
     "@storybook/addon-a11y",
     "@storybook/addon-docs",
-    "@storybook/addon-onboarding",
+    "@storybook/addon-interactions",
+    "@storybook/addon-test",
   ],
-  framework: "@storybook/react-vite",
+
+  framework: {
+    name: "@storybook/react-vite",
+    options: {},
+  },
+
+  async viteFinal(config) {
+    config.server = {
+      ...config.server,
+      proxy: {
+        "/api": "http://localhost:3001",
+      },
+    };
+
+    return config;
+  },
 };
+
 export default config;

@@ -13,7 +13,7 @@ export default defineConfig([
   globalIgnores(["dist", "coverage", "node_modules", "stories", ".storybook"]),
 
   {
-    files: ["src/**/*.{ts,tsx}"],
+    files: ["src/**/*.{ts,tsx}", "server/**/*.{ts,tsx}"],
     ignores: ["vite.config.ts"],
 
     languageOptions: {
