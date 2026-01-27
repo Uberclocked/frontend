@@ -1,2 +1,6 @@
+packages:
+  - "."        # root
+  - "server"   # server folder
+
 ignoredBuiltDependencies:
   - "@swc/core"
