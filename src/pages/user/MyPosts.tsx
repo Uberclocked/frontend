@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import type {PostDto} from "@/types/PostDto.ts";
 
-import { postService } from "../services/postService";
+import { postService } from "../../services/postService.ts";
 
 export default function MyPosts() {
     const { getAccessTokenSilently } = useAuth0();

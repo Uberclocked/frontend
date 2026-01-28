@@ -1,20 +1,22 @@
 import { Routes, Route } from "react-router-dom";
 
-
+import Components from "@/pages/admin/Components.tsx";
+import ProductsUser from "@/pages/user/ProductUser.tsx";
 
 import AuthCallback from "../src/components/AuthCallback.tsx";
 
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AdminPurchasesPage from "./pages/AdminPurchase";
-import CartPage from "./pages/Cart.tsx";
-import CreateCompanyPage from "./pages/CreateCompany.tsx";
-import CreatePostPage from "./pages/CreatePost.tsx";
+import Products from "./pages/admin/Product.tsx";
 import Home from "./pages/Home";
-import MyPosts from "./pages/MyPosts.tsx";
 import PostsFeed from "./pages/PostsFeed.tsx";
-import Profile from "./pages/Profile";
-import PurchasesPage from "./pages/Purchase";
+import CartPage from "./pages/user/Cart.tsx";
+import CreateCompanyPage from "./pages/user/CreateCompany.tsx";
+import CreatePostPage from "./pages/user/CreatePost.tsx";
+import MyPosts from "./pages/user/MyPosts.tsx";
+import Profile from "./pages/user/Profile.tsx";
+import PurchasesPage from "./pages/user/Purchase.tsx";
+
 
 
 function App() {
@@ -60,7 +62,6 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
-
                 <Route
                     path="/cart"
                     element={
@@ -69,7 +70,6 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
-
                 <Route
                     path="/purchases/me"
                     element={
@@ -78,13 +78,24 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
-
+                <Route path="/components" element={
+                    <ProtectedRoute>
+                        <Components />
+                    </ProtectedRoute>
+                    }
+                />
                 <Route
-                    path="/admin/purchases"
+                    path="/products"
                     element={
                         <ProtectedRoute>
-                            <AdminPurchasesPage />
+                            <Products />
                         </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/market"
+                    element={
+                            <ProductsUser />
                     }
                 />
             </Routes>

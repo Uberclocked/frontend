@@ -1,8 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 
-import {getMyPurchases} from "../services/Purchase.ts";
-import type {Purchase} from "../types/Entities.ts";
+import {getMyPurchases} from "../../services/Purchase.ts";
+import type {Purchase} from "../../types/Entities.ts";
 
 export default function PurchasesPage() {
     const { getAccessTokenSilently } = useAuth0();

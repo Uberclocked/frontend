@@ -1,13 +1,13 @@
 export interface Product {
     skuPrefix: string;
     name: string;
-    image: string;
+    image: string | null;
     price: number;
     stock: number;
     active: boolean;
     component: {
         skuPrefix: string;
-        name: string;
+        displayName: string;
     };
     attributes: Record<string, string>;
 }

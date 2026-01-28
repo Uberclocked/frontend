@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 
-import PostForm from "../components/PostForm";
+import PostForm from "../../components/PostForm.tsx";
 
 export default function CreatePostPage() {
     const { isAuthenticated, getAccessTokenSilently } = useAuth0();

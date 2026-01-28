@@ -1,8 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 
-import { postService } from "../services/postService";
-import type { PostDto } from "../types/PostDto";
+import { postService } from "../services/postService.ts";
+import type { PostDto } from "../types/PostDto.ts";
 
 export default function PostsFeed() {
     const [posts, setPosts] = useState<PostDto[]>([]);

@@ -6,6 +6,9 @@ export async function getProducts(): Promise<Product[]> {
     return fetch(`${BASE}/products`).then(r => r.json());
 }
 
-export async function filterProducts(params: URLSearchParams): Promise<Product[]> {
-    return fetch(`${BASE}/products/filter?${params}`).then(r => r.json());
+export async function getFilteredProductsPublic(
+    params: Record<string, string>
+) {
+    const query = new URLSearchParams(params).toString();
+    return fetch(`${BASE}/products/filter?${query}`).then(r => r.json());
 }
