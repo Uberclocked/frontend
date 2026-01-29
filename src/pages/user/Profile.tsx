@@ -2,8 +2,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
 import {useNavigate} from "react-router-dom";
 
-import { fetchWithAuth } from "../../services/api.ts";
-import type { UserDataDto } from "../../types/UserDataDto.ts";
+import { fetchWithAuth } from "@/services/api.ts";
+import type { UserDataDto } from "@/types/UserDataDto.ts";
 
 
 export default function Profile() {

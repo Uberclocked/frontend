@@ -29,7 +29,7 @@ export default function NavBar() {
     const roles =
         user?.["https://uberclocked.com/roles"] || [];
 
-    const isAdmin = roles.includes("Admin");
+    const isAdmin = roles.includes("ADMIN") || roles.includes("Admin");
 
     const navigate = useNavigate();
 
@@ -52,26 +52,43 @@ export default function NavBar() {
                 <Link to="/" className={navLinkClass}>
                     Home
                 </Link>
-                <Link to="/posts" className={navLinkClass}>
-                    Exchange Area
-                </Link>
+                {!isAdmin && (
+                    <>
+                        <Link to="/posts" className={navLinkClass}>
+                            Exchange Area
+                        </Link>
+                    </>
+                )}
+
                 <Link to="/market" className={navLinkClass}>
                     Market
                 </Link>
                 {isAuthenticated && isAdmin && (
                     <>
+                        <Link to="/admin/posts" className={navLinkClass}>
+                            Exchange Area (Admin)
+                        </Link>
                         <Link to="/components" className={navLinkClass}>
                             Components
                         </Link>
                         <Link to="/products" className={navLinkClass}>
                             Products
                         </Link>
+                        <Link to="/all-purchases" className={navLinkClass}>
+                            All purchases
+                        </Link>
+                        <Link to="/admin/reviews" className={navLinkClass}>
+                            Reviews
+                        </Link>
                     </>
                 )}
 
-                {isAuthenticated && (
-                    <div className="flex items-center gap-6 ml-6">
-                        <Link to="/purchases/me" className={navLinkClass}>
+                {isAuthenticated && !isAdmin && (
+                    <>
+                        <Link to="/pc-builder" className={navLinkClass}>
+                            Build PC
+                        </Link>
+                        <Link to="/my-purchases" className={navLinkClass}>
                             My purchases
                         </Link>
                         <Link to="/cart" className="flex items-center cursor-pointer ml-6">
@@ -81,7 +98,8 @@ export default function NavBar() {
                                 className="h-8 w-8 object-contain"
                             />
                         </Link>
-                    </div>
+
+                    </>
                 )}
             </div>
             <div className="flex items-center gap-4">
@@ -125,12 +143,16 @@ export default function NavBar() {
                             <DropdownMenuItem onClick={() => navigate("/profile")}>
                                 Profile
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => navigate("/posts/me")}>
-                                My posts
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => navigate("/reviews/me")}>
-                                My reviews
-                            </DropdownMenuItem>
+                            {!isAdmin && (
+                                <>
+                                    <DropdownMenuItem onClick={() => navigate("/posts/me")}>
+                                        My posts
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => navigate("/reviews/me")}>
+                                        My reviews
+                                    </DropdownMenuItem>
+                                </>
+                            )}
                             <DropdownMenuItem
                                 className="text-red-600"
                                 onClick={() =>

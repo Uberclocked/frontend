@@ -15,9 +15,11 @@ export interface Product {
 export interface CartItem {
     id: string;
     name: string;
-    product?: Product;
+    image: string | null;
     quantity: number;
     totalPrice: number;
+    productSku?: string | null;
+    productName?: string | null;
     components: Record<string, string>;
 }
 

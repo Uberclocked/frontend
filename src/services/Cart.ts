@@ -8,7 +8,7 @@ export async function getMyCart(token: string): Promise<Cart> {
     return fetchWithAuth(`${BASE}/carts/me`, token);
 }
 
-export async function addItemToCart(
+export async function addCartItem(
     token: string,
     dto: AddCartItemDto
 ): Promise<Cart> {
@@ -54,5 +54,27 @@ export async function removeCartItem(token: string, itemId: string) {
 export async function checkout(token: string): Promise<Cart> {
     return fetchWithAuth(`${BASE}/carts/me/checkout`, token, {
         method: "POST",
+    });
+}
+export async function addCustomPcToCart(token: string, components: Record<string, string>, quantity = 1) {
+    return fetchWithAuth(`${BASE}/carts/me/items`, token, {
+        method: "POST",
+        body: JSON.stringify({
+            productSku: "",      
+            quantity,
+            components,
+        }),
+    });
+}
+
+export async function updateCartItemComponent(
+    token: string,
+    itemId: string,
+    componentType: string,
+    newProductSku: string
+) {
+    const qs = new URLSearchParams({ componentType, newProductSku });
+    return fetchWithAuth(`${BASE}/carts/me/items/${itemId}/components?${qs.toString()}`, token, {
+        method: "PATCH",
     });
 }

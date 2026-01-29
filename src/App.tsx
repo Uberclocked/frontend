@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
 import Components from "@/pages/admin/Components.tsx";
+import MyPurchasesPage from "@/pages/user/MyPurchasesPage.tsx";
 import ProductsUser from "@/pages/user/ProductUser.tsx";
 
 import AuthCallback from "../src/components/AuthCallback.tsx";
@@ -15,7 +16,13 @@ import CreateCompanyPage from "./pages/user/CreateCompany.tsx";
 import CreatePostPage from "./pages/user/CreatePost.tsx";
 import MyPosts from "./pages/user/MyPosts.tsx";
 import Profile from "./pages/user/Profile.tsx";
-import PurchasesPage from "./pages/user/Purchase.tsx";
+import AdminAllPurchasesPage from "@/pages/admin/AdminAllPurchasesPage.tsx";
+import ProductDetailPage from "@/pages/ProductDetailPage.tsx";
+import MyReviewsPage from "@/pages/user/MyReviewsPage.tsx";
+import AdminReviewsPage from "@/pages/admin/AdminReviewsPage.tsx";
+import PcBuilderPage from "@/pages/user/PcBuilderPage.tsx";
+import PostDetailPage from "@/pages/user/PostDetailPage.tsx";
+import AdminPostsPage from "@/pages/admin/AdminPostsPage.tsx";
 
 
 
@@ -53,7 +60,12 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
-
+                <Route
+                    path="/posts/:id"
+                    element={
+                        <PostDetailPage />
+                    }
+                />
                 <Route
                     path="/posts/me"
                     element={
@@ -71,11 +83,25 @@ function App() {
                     }
                 />
                 <Route
-                    path="/purchases/me"
+                    path="/my-purchases"
                     element={
                         <ProtectedRoute>
-                            <PurchasesPage />
+                            <MyPurchasesPage />
                         </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/all-purchases"
+                    element={
+                        <ProtectedRoute>
+                            <AdminAllPurchasesPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/products/:skuPrefix"
+                    element={
+                        <ProductDetailPage />
                     }
                 />
                 <Route path="/components" element={
@@ -98,6 +124,48 @@ function App() {
                             <ProductsUser />
                     }
                 />
+                <Route
+                    path="/reviews/me"
+                    element={
+                        <ProtectedRoute>
+                            <MyReviewsPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin/reviews"
+                    element={
+                        <ProtectedRoute>
+                            <AdminReviewsPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/pc-builder"
+                    element={
+                        <ProtectedRoute>
+                            <PcBuilderPage />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/pc-builder/:itemId"
+                    element={
+                        <ProtectedRoute>
+                            <PcBuilderPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin/posts"
+                    element={
+                        <ProtectedRoute>
+                            <AdminPostsPage />
+                        </ProtectedRoute>
+                    }
+                />
+
             </Routes>
         </>
     );

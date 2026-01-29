@@ -1,24 +1,28 @@
-export async function fetchWithAuth<T>(
-    url: string,
-    token: string,
-    options: RequestInit = {}
-): Promise<T> {
+export async function fetchWithAuth<T>(url: string, token: string, init: RequestInit = {}): Promise<T> {
     const res = await fetch(url, {
-        ...options,
+        ...init,
         headers: {
-            "Content-Type": "application/json",
+            ...(init.headers ?? {}),
             Authorization: `Bearer ${token}`,
-            ...(options.headers || {})
-        }
+            "Content-Type": "application/json",
+        },
     });
 
     if (!res.ok) {
-        throw new Error(`API error ${res.status}`);
+        const text = await res.text().catch(() => "");
+        throw new Error(text || `Request failed: ${res.status}`);
     }
 
-    if (res.status === 204) {
-        return null as T; 
+    if (res.status === 204) return undefined as T;
+
+    const contentType = res.headers.get("content-type") ?? "";
+    const text = await res.text();
+
+    if (!text) return undefined as T;
+
+    if (contentType.includes("application/json")) {
+        return JSON.parse(text) as T;
     }
 
-    return res.json();
+    return text as unknown as T;
 }

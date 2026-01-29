@@ -82,7 +82,7 @@ export default function EditProductDialog({
         if (file) formData.append("image", file);
 
         await fetch(`http://localhost:8080/products/${sku}`, {
-            method: "PUT",
+            method: "PATCH",
             headers: { Authorization: `Bearer ${token}` },
             body: formData,
         });

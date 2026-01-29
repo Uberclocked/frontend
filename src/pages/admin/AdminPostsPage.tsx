@@ -21,8 +21,11 @@ function toImgSrc(image: string | null) {
     return `data:image/jpeg;base64,${image}`;
 }
 
-export default function MyPosts() {
-    const { isAuthenticated, loginWithRedirect, getAccessTokenSilently } = useAuth0();
+export default function AdminPostsPage() {
+    const { isAuthenticated, loginWithRedirect, getAccessTokenSilently, user } = useAuth0();
+
+    const roles: string[] = user?.["https://uberclocked.com/roles"] || [];
+    const isAdmin = roles.includes("ADMIN") || roles.includes("Admin");
 
     const [posts, setPosts] = useState<PostResponseDto[]>([]);
     const [loading, setLoading] = useState(true);
@@ -30,21 +33,34 @@ export default function MyPosts() {
     const [q, setQ] = useState("");
     const [error, setError] = useState<string | null>(null);
 
+    const [statusFilter, setStatusFilter] =
+        useState<"ALL" | "ACTIVE" | "SOLD" | "DELETED">("ALL");
+
     const filtered = useMemo(() => {
         const s = q.trim().toLowerCase();
-        if (!s) return posts;
-        return posts.filter((p) => `${p.title} ${p.category} ${p.description}`.toLowerCase().includes(s));
-    }, [posts, q]);
+
+        return posts.filter((p) => {
+            const matchesText =
+                !s ||
+                `${p.title} ${p.category} ${p.description} ${p.sellerUserName}`
+                    .toLowerCase()
+                    .includes(s);
+
+            const matchesStatus = statusFilter === "ALL" || p.status === statusFilter;
+
+            return matchesText && matchesStatus;
+        });
+    }, [posts, q, statusFilter]);
 
     async function load() {
         setLoading(true);
         setError(null);
         try {
             const token = await getAccessTokenSilently();
-            const data = await marketApi.getMyPosts(token);
+            const data = await marketApi.getAllPostsAdmin(token);
             setPosts(data);
         } catch (e: any) {
-            setError(e.message ?? "Error loading your posts");
+            setError(e.message ?? "Error loading posts");
         } finally {
             setLoading(false);
         }
@@ -55,34 +71,24 @@ export default function MyPosts() {
             setLoading(false);
             return;
         }
+        if (!isAdmin) {
+            setLoading(false);
+            setError("Forbidden: admin only");
+            return;
+        }
         void load();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isAuthenticated]);
-
-    async function markSold(id: UUID) {
-        setBusyId(id);
-        try {
-            const token = await getAccessTokenSilently();
-            await marketApi.markAsSold(token, id);
-            setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, status: "SOLD" } : p)));
-            window.location.reload();
-        } catch (e: any) {
-            alert(e.message ?? "Could not mark as sold");
-        } finally {
-            setBusyId(null);
-        }
-    }
+    }, [isAuthenticated, isAdmin]);
 
     async function remove(id: UUID) {
-        const ok = confirm("Are you sure you want to delete this post?");
+        const ok = confirm("Delete this post? (will set status to DELETED)");
         if (!ok) return;
 
         setBusyId(id);
         try {
             const token = await getAccessTokenSilently();
             await marketApi.deletePost(token, id);
-            setPosts((prev) => prev.filter((p) => p.id !== id));
-            window.location.reload();
+            window.location.reload(); // ✅ refresh literal
         } catch (e: any) {
             alert(e.message ?? "Could not delete post");
         } finally {
@@ -93,8 +99,11 @@ export default function MyPosts() {
     if (!isAuthenticated) {
         return (
             <div className={shell + " flex items-center justify-center"}>
-                <Button onClick={() => loginWithRedirect()} className="bg-[#FF8000] text-black hover:bg-[#e67300]">
-                    Login to see your posts
+                <Button
+                    onClick={() => loginWithRedirect()}
+                    className="bg-[#FF8000] text-black hover:bg-[#e67300]"
+                >
+                    Login as admin
                 </Button>
             </div>
         );
@@ -113,18 +122,30 @@ export default function MyPosts() {
             <div className="mx-auto max-w-5xl space-y-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold text-[#FF8000]">My posts</h1>
-                        <p className="text-[#F5F5DC] opacity-80">Manage your publications.</p>
+                        <h1 className="text-3xl font-bold text-[#FF8000]">Admin • All posts</h1>
+                        <p className="text-[#F5F5DC] opacity-80">View and delete any publication.</p>
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                         <Input
                             value={q}
                             onChange={(e) => setQ(e.target.value)}
-                            placeholder="Search..."
+                            placeholder="Search (title, category, seller)..."
                             className="w-full sm:w-80 bg-gray-950 text-[#F5F5DC] border-gray-800
                          focus-visible:ring-0 focus-visible:ring-offset-0"
                         />
+
+                        <select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value as any)}
+                            className="w-full sm:w-40 bg-gray-950 text-[#F5F5DC] border border-gray-800 rounded-md px-3 py-2
+                         focus:outline-none focus:ring-0"
+                        >
+                            <option value="ALL">All</option>
+                            <option value="ACTIVE">ACTIVE</option>
+                            <option value="SOLD">SOLD</option>
+                            <option value="DELETED">DELETED</option>
+                        </select>
                     </div>
                 </div>
 
@@ -136,7 +157,7 @@ export default function MyPosts() {
 
                 {!error && filtered.length === 0 ? (
                     <div className={card}>
-                        <p className="text-[#F5F5DC]">You don't have posts yet.</p>
+                        <p className="text-[#F5F5DC]">No posts found.</p>
                     </div>
                 ) : (
                     <div className="grid gap-4">
@@ -167,7 +188,8 @@ export default function MyPosts() {
                                                 </div>
 
                                                 <p className="text-[#F5F5DC] text-sm opacity-80">
-                                                    {p.category} • ${p.price} • <span className="opacity-90">by {p.sellerUserName}</span>
+                                                    {p.category} • ${p.price} •{" "}
+                                                    <span className="opacity-90">by {p.sellerUserName}</span>
                                                 </p>
 
                                                 {p.description && (
@@ -180,15 +202,6 @@ export default function MyPosts() {
                                         </div>
 
                                         <div className="flex shrink-0 flex-col gap-2">
-                                            <Button
-                                                onClick={() => markSold(p.id)}
-                                                disabled={busyId === p.id || p.status !== "ACTIVE"}
-                                                className="bg-[#FF8000] text-black hover:bg-[#e67300]
-                                   focus-visible:ring-0 focus-visible:ring-offset-0"
-                                            >
-                                                {busyId === p.id ? "Saving..." : "Mark as sold"}
-                                            </Button>
-
                                             <Button
                                                 variant="destructive"
                                                 className="text-[#F5F5DC] focus-visible:ring-0 focus-visible:ring-offset-0"

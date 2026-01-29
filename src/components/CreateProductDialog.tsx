@@ -39,8 +39,8 @@ export default function CreateProductDialog({ onCreated }: { onCreated: () => vo
 
     const [sku, setSku] = useState("");
     const [name, setName] = useState("");
-    const [price, setPrice] = useState(0);
-    const [stock, setStock] = useState(0);
+    const [price, setPrice] = useState<number | "">("");
+    const [stock, setStock] = useState<number | "">("");
 
     useEffect(() => {
         (async () => {
@@ -105,21 +105,23 @@ export default function CreateProductDialog({ onCreated }: { onCreated: () => vo
                     onChange={e => setName(e.target.value)}
                     className="bg-[#2b3740] text-[#F5F5DC] border-none focus:ring-0"                />
                 <Input
+                    placeholder="Price"
                     type="number"
                     value={price}
-                    onChange={e => {
+                    onChange={(e) => {
                         const val = e.target.value.replace(/[^0-9.]/g, "");
-                        setPrice(Number(val));
+                        setPrice(val === "" ? "" : Number(val));
                     }}
                     className="bg-[#2b3740] text-[#F5F5DC] border-none focus:ring-0"
                     inputMode="decimal"
                 />
                 <Input
+                    placeholder="Stock"
                     type="number"
                     value={stock}
-                    onChange={e => {
+                    onChange={(e) => {
                         const val = e.target.value.replace(/[^0-9]/g, "");
-                        setStock(Number(val));
+                        setStock(val === "" ? "" : Number(val));
                     }}
                     className="bg-[#2b3740] text-[#F5F5DC] border-none focus:ring-0"
                     inputMode="numeric"
