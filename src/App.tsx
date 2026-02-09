@@ -27,12 +27,15 @@ import { useEffect } from "react";
 import Checkout from "./pages/Checkout.tsx";
 import { initMercadoPago } from "@mercadopago/sdk-react";
 import CenteredLayout from "./components/layout/CenteredLayout.tsx";
+import PaymentSuccess from "./pages/payment/PaymentSuccess.tsx";
+import PaymentPending from "./pages/payment/PaymentPending.tsx";
+import PaymentFailure from "./pages/payment/PaymentFailure.tsx";
 
 
 
 function App() {
   useEffect(() => {
-    initMercadoPago("APP_USR-f45751b2-3f8c-4740-8343-ec69dc9a0c70")
+    initMercadoPago("TEST-dbeefbf1-09b0-4f59-97de-d4575669c873")
   }, []);
 
   return (
@@ -172,10 +175,13 @@ function App() {
           }
         />
       </Route>
-      <Route path="checkout/:preferenceId" element={<CenteredLayout />}>
-        <Route index element={<Checkout />} />
+      <Route element={<CenteredLayout />}>
+        <Route path="checkout/:preferenceId" element={<Checkout />} />
+        <Route path="payment/success" element={<PaymentSuccess />} />
+        <Route path="payment/pending" element={<PaymentPending />} />
+        <Route path="payment/failure" element={<PaymentFailure />} />
       </Route>
-    </Routes>
+    </Routes >
   );
 }
 

@@ -9,5 +9,5 @@ export async function generatePreference(token: string) {
 }
 
 export async function createPayment(token: string, formData: IPaymentFormData) {
-  return postWithAuth<{ transaction_id: UUID, payment_id: number }>(`${BASE_URL}/payment`, token, formData.formData)
+  return postWithAuth<{ transaction_id: UUID, payment_id: number, status: "APPROVED" | "PENDING" | "FAILURE" }>(`${BASE_URL}/payment`, token, formData.formData)
 }

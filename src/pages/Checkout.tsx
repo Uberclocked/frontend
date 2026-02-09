@@ -2,35 +2,42 @@ import { createPayment } from '@/services/mp';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Payment } from '@mercadopago/sdk-react';
 import type { IPaymentFormData, IAdditionalCardFormData, IPaymentBrickCustomization } from "@mercadopago/sdk-react/esm/bricks/payment/type";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function Checkout() {
   const { getAccessTokenSilently } = useAuth0();
   const { preferenceId } = useParams<{ preferenceId: string }>();
+  const navigate = useNavigate();
+
   if (!preferenceId) return;
   const initialization = {
-    amount: 100000,
+    amount: 50,
     preferenceId: preferenceId,
   };
-  const onSubmit = async (param: IPaymentFormData, param2?: IAdditionalCardFormData | null) => {
+  const onSubmit = async (formData: IPaymentFormData, _?: IAdditionalCardFormData | null) => {
     const token = await getAccessTokenSilently();
-    return createPayment(token, param)
+    try {
+      const result = await createPayment(token, formData);
+      switch (result.status) {
+        case "APPROVED":
+          navigate("/payment/success");
+          break;
+        case "PENDING":
+          navigate("/payment/pending");
+          break;
+        case "FAILURE":
+          navigate("/payment/failure");
+          break;
+      }
+      return result;
+    } catch (error) {
+      navigate("/payment/failure");
+      return;
+    }
   }
-  const onError = async (error) => {
-    // callback llamado para todos los casos de error de Brick
-    console.log(error);
-  };
-  const onReady = async () => {
-    /*
-      Callback llamado cuando el Brick está listo.
-      Aquí puede ocultar cargamentos de su sitio, por ejemplo.
-    */
-  };
   const customization: IPaymentBrickCustomization = {
     paymentMethods: {
-      ticket: "all",
       creditCard: "all",
-      prepaidCard: "all",
       debitCard: "all",
       mercadoPago: "all",
     },
@@ -40,8 +47,6 @@ function Checkout() {
       <Payment
         initialization={initialization}
         customization={customization}
-        onReady={onReady}
-        onError={onError}
         onSubmit={onSubmit} />
     </div>
   );
