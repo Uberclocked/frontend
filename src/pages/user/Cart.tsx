@@ -1,11 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { getMyCart, updateCartItem, removeCartItem } from "@/services/Cart.ts";
-import { createPurchase } from "@/services/Purchase.ts";
 import pcPlaceholder from "@/stories/assets/pc.jpg";
 import type { Cart } from "@/types/Entities.ts";
+import { generatePreference } from "@/services/mp";
 
 
 export default function CartPage() {
@@ -15,6 +15,12 @@ export default function CartPage() {
   const [updating, setUpdating] = useState<Record<string, boolean>>({});
   const navigate = useNavigate();
   const [visibleCount, setVisibleCount] = useState(6);
+  const [preferenceId, setPreferenceId] = useState("");
+
+  async function getPreferenceId() {
+    const token = await getAccessTokenSilently();
+    return (await generatePreference(token)).id;
+  }
 
   async function loadCart() {
     setLoading(true);
@@ -53,6 +59,18 @@ export default function CartPage() {
   useEffect(() => {
     loadCart();
   }, []);
+
+  useEffect(() => {
+    if (!cart) return;
+
+    async function createPreference() {
+      if (!cart) return;
+      const pid = await getPreferenceId();
+      setPreferenceId(pid);
+    }
+
+    createPreference();
+  }, [cart]);
 
   function setLocalQty(itemId: string, qty: number) {
     setCart((prev) => {
@@ -118,13 +136,6 @@ export default function CartPage() {
     } finally {
       setUpdating((m) => ({ ...m, [itemId]: false }));
     }
-  }
-
-  async function doCheckout() {
-    const token = await getAccessTokenSilently();
-    await createPurchase(token);
-    alert("Purchase successful!");
-    loadCart();
   }
 
   const items = useMemo(() => cart?.items ?? [], [cart?.items]);
@@ -298,16 +309,13 @@ export default function CartPage() {
             </div>
 
             <div className="flex justify-center">
-              <button
-                onClick={doCheckout}
-                className="mt-8 px-6 py-3 rounded-2xl text-white text-lg font-bold"
-              >
-                Pay
-              </button>
+              <Link to={`/checkout/${preferenceId}`} className="mt-8 px-6 py-3 rounded-2xl text-lg font-bold">
+                Go to checkout
+              </Link>
             </div>
           </>
         )}
       </div>
-    </div>
+    </div >
   );
 }

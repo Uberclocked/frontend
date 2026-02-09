@@ -23,10 +23,18 @@ import PcBuilderPage from "@/pages/user/PcBuilderPage.tsx";
 import PostDetailPage from "@/pages/user/PostDetailPage.tsx";
 import AdminPostsPage from "@/pages/admin/AdminPostsPage.tsx";
 import NavBarLayout from "./components/layout/NavBarLayout.tsx";
+import { useEffect } from "react";
+import Checkout from "./pages/Checkout.tsx";
+import { initMercadoPago } from "@mercadopago/sdk-react";
+import CenteredLayout from "./components/layout/CenteredLayout.tsx";
 
 
 
 function App() {
+  useEffect(() => {
+    initMercadoPago("APP_USR-f45751b2-3f8c-4740-8343-ec69dc9a0c70")
+  }, []);
+
   return (
     <Routes>
       <Route element={<NavBarLayout />}>
@@ -163,6 +171,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+      </Route>
+      <Route path="checkout/:preferenceId" element={<CenteredLayout />}>
+        <Route index element={<Checkout />} />
       </Route>
     </Routes>
   );

@@ -92,7 +92,7 @@ export default function NavBar() {
           </>
         )}
 
-        {isAuthenticated && !isAdmin && (
+        {isAuthenticated && (
           <>
             <Link to="/pc-builder" className={navLinkClass}>
               Build PC
