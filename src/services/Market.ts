@@ -1,96 +1,150 @@
 import { fetchWithAuth } from "@/services/api";
-import type {PostDataDto, PostInterestDto, PostResponseDto, UserPublicDto, UUID} from "@/types/Market";
+import type { PostDataDto, PostInterestDto, PostResponseDto, UserPublicDto, UUID } from "@/types/Market";
 
 const BASE = "http://localhost:8080";
 
-export const marketApi = {
+// PUBLIC
 
-    async getPostsPublic(): Promise<PostResponseDto[]> {
-        const res = await fetch(`${BASE}/posts`);
-        if (!res.ok) throw new Error(`API error ${res.status}`);
-        return res.json();
+export async function getPostsPublic(): Promise<PostResponseDto[]> {
+  const res = await fetch(`${BASE}/posts`);
+  if (!res.ok) throw new Error(`API error ${res.status}`);
+  return res.json();
+}
+
+export async function getPostByIdPublic(id: UUID): Promise<PostResponseDto> {
+  const res = await fetch(`${BASE}/posts/${id}`);
+  if (!res.ok) throw new Error(`API error ${res.status}`);
+  return res.json();
+}
+
+// AUTHENTICATED
+
+export async function getPosts(token: string): Promise<PostResponseDto[]> {
+  return fetchWithAuth<PostResponseDto[]>(`${BASE}/posts`, token);
+}
+
+export async function getPostById(
+  token: string,
+  id: UUID
+): Promise<PostResponseDto> {
+  return fetchWithAuth<PostResponseDto>(`${BASE}/posts/${id}`, token);
+}
+
+export async function createPost(
+  token: string,
+  dto: PostDataDto,
+  image: File | null
+): Promise<PostResponseDto> {
+  const fd = new FormData();
+
+  fd.append(
+    "data",
+    new Blob([JSON.stringify(dto)], { type: "application/json" })
+  );
+
+  if (image) fd.append("image", image);
+
+  const res = await fetch(`${BASE}/posts`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
+    body: fd,
+  });
 
-    async getPostByIdPublic(id: UUID): Promise<PostResponseDto> {
-        const res = await fetch(`${BASE}/posts/${id}`);
-        if (!res.ok) throw new Error(`API error ${res.status}`);
-        return res.json();
-    },
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(text || `API error ${res.status}`);
+  }
 
-    getPosts(token: string): Promise<PostResponseDto[]> {
-        return fetchWithAuth<PostResponseDto[]>(`${BASE}/posts`, token);
-    },
+  return res.json();
+}
 
-    getPostById(token: string, id: UUID): Promise<PostResponseDto> {
-        return fetchWithAuth<PostResponseDto>(`${BASE}/posts/${id}`, token);
-    },
+export async function getMyPosts(token: string): Promise<PostResponseDto[]> {
+  return fetchWithAuth<PostResponseDto[]>(`${BASE}/posts/me`, token);
+}
 
-    async createPost(token: string, dto: PostDataDto, image: File | null): Promise<PostResponseDto> {
-        const fd = new FormData();
-
-        fd.append(
-            "data",
-            new Blob([JSON.stringify(dto)], { type: "application/json" })
-        );
-
-        if (image) fd.append("image", image);
-
-        const res = await fetch(`${BASE}/posts`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            body: fd,
-        });
-
-        if (!res.ok) {
-            const text = await res.text().catch(() => "");
-            throw new Error(text || `API error ${res.status}`);
-        }
-
-        return res.json();
-    },
-
-    getMyPosts(token: string): Promise<PostResponseDto[]> {
-        return fetchWithAuth<PostResponseDto[]>(`${BASE}/posts/me`, token);
-    },
-
-    updatePost(token: string, id: UUID, dto: PostDataDto): Promise<PostResponseDto> {
-        return fetchWithAuth<PostResponseDto>(`${BASE}/posts/${id}`, token, {
-            method: "PATCH",
-            body: JSON.stringify(dto),
-        });
-    },
-
-    deletePost(token: string, id: UUID): Promise<void> {
-        return fetchWithAuth<void>(`${BASE}/posts/${id}`, token, { method: "DELETE" });
-    },
-
-    markAsSold(token: string, id: UUID): Promise<void> {
-        return fetchWithAuth<void>(`${BASE}/posts/${id}/sold`, token, { method: "POST" });
-    },
-
-    markInterest(token: string, postId: UUID): Promise<void> {
-        return fetchWithAuth<void>(`${BASE}/posts/${postId}/interest`, token, { method: "POST" });
-    },
-
-    getInterested(token: string, postId: UUID): Promise<PostInterestDto[]> {
-        return fetchWithAuth<PostInterestDto[]>(`${BASE}/posts/${postId}/interested`, token);
-    },
-
-    purchaseInterestedInfo(token: string, postId: UUID, interestedUserId: UUID): Promise<UserPublicDto> {
-        return fetchWithAuth<UserPublicDto>(
-            `${BASE}/posts/${postId}/interested/${interestedUserId}/purchase`,
-            token,
-            { method: "POST" }
-        );
-    },
-
-    getInterestedInfo(token: string, postId: UUID, interestedUserId: UUID): Promise<UserPublicDto> {
-        return fetchWithAuth<UserPublicDto>(`${BASE}/posts/${postId}/interested/${interestedUserId}`, token);
-    },
-
-    getAllPostsAdmin(token: string): Promise<PostResponseDto[]> {
-        return fetchWithAuth<PostResponseDto[]>(`${BASE}/posts/admin/all`, token);
+export async function updatePost(
+  token: string,
+  id: UUID,
+  dto: PostDataDto
+): Promise<PostResponseDto> {
+  return fetchWithAuth<PostResponseDto>(
+    `${BASE}/posts/${id}`,
+    token,
+    {
+      method: "PATCH",
+      body: JSON.stringify(dto),
     }
-};
+  );
+}
+
+export async function deletePost(token: string, id: UUID): Promise<void> {
+  return fetchWithAuth<void>(
+    `${BASE}/posts/${id}`,
+    token,
+    { method: "DELETE" }
+  );
+}
+
+export async function markAsSold(token: string, id: UUID): Promise<void> {
+  return fetchWithAuth<void>(
+    `${BASE}/posts/${id}/sold`,
+    token,
+    { method: "POST" }
+  );
+}
+
+export async function markInterest(
+  token: string,
+  postId: UUID
+): Promise<void> {
+  return fetchWithAuth<void>(
+    `${BASE}/posts/${postId}/interest`,
+    token,
+    { method: "POST" }
+  );
+}
+
+export async function getInterested(
+  token: string,
+  postId: UUID
+): Promise<PostInterestDto[]> {
+  return fetchWithAuth<PostInterestDto[]>(
+    `${BASE}/posts/${postId}/interested`,
+    token
+  );
+}
+
+export async function purchaseInterestedInfo(
+  token: string,
+  postId: UUID,
+  interestedUserId: UUID
+): Promise<UserPublicDto> {
+  return fetchWithAuth<UserPublicDto>(
+    `${BASE}/posts/${postId}/interested/${interestedUserId}/purchase`,
+    token,
+    { method: "POST" }
+  );
+}
+
+export async function getInterestedInfo(
+  token: string,
+  postId: UUID,
+  interestedUserId: UUID
+): Promise<UserPublicDto> {
+  return fetchWithAuth<UserPublicDto>(
+    `${BASE}/posts/${postId}/interested/${interestedUserId}`,
+    token
+  );
+}
+
+export async function getAllPostsAdmin(
+  token: string
+): Promise<PostResponseDto[]> {
+  return fetchWithAuth<PostResponseDto[]>(
+    `${BASE}/posts/admin/all`,
+    token
+  );
+}
+

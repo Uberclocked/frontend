@@ -19,6 +19,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-border: var(--border);
   --color-muted: var(--muted);
+  --color-error: var(--error);
 }
 
 :root {
@@ -30,6 +31,7 @@
   --card-foreground: hsl(204 18% 20%);
   --border: hsl(204 18% 38% / 0.4);
   --muted: hsl(204 12% 40%);
+  --error: hsl(0, 100%, 58.6%);
 }
 
 .dark {
@@ -39,9 +41,16 @@
   --card: hsl(204 16% 32%);
   --card-foreground: hsl(60 56% 92%);
   --muted: hsl(204 10% 60%);
+  --error: hsl(0, 100%, 58.6%);
 }
 
 @layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
   body {
     @apply bg-background text-foreground;
   }

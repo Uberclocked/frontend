@@ -144,7 +144,7 @@ export default function AdminAllPurchasesPage() {
               return (
                 <div
                   key={p.id}
-                  className="p-4 rounded-2xl bg-gray-900 border border-gray-800"
+                  className="p-4 rounded-2xl border"
                 >
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                     <div className="flex-1">
@@ -173,7 +173,7 @@ export default function AdminAllPurchasesPage() {
                         </div>
                       </div>
 
-                      <div className="mt-4 border-t border-gray-800 pt-4">
+                      <div className="mt-4 border-t pt-4">
                         <p className="mb-2">
                           Items:{" "}
                           <span className="font-semibold">
@@ -263,7 +263,7 @@ export default function AdminAllPurchasesPage() {
                       <button
                         onClick={() => savePurchase(p)}
                         disabled={isSaving}
-                        className="mt-4 w-full px-4 py-3 rounded-2xl text-white font-bold disabled:opacity-50"
+                        className="mt-4 w-full px-4 py-3 rounded-2xl font-bold disabled:opacity-50"
                       >
                         {isSaving ? "Saving…" : "Update"}
                       </button>

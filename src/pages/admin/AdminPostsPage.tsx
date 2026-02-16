@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { marketApi } from "@/services/Market";
 import type { PostResponseDto, UUID } from "@/types/Market";
+import { getAllPostsAdmin, deletePost } from "@/services/Market";
 
 const shell = "min-h-screen p-6";
 const card = "rounded-2xl border p-6";
@@ -57,7 +57,7 @@ export default function AdminPostsPage() {
     setError(null);
     try {
       const token = await getAccessTokenSilently();
-      const data = await marketApi.getAllPostsAdmin(token);
+      const data = await getAllPostsAdmin(token);
       setPosts(data);
     } catch (e: any) {
       setError(e.message ?? "Error loading posts");
@@ -87,7 +87,7 @@ export default function AdminPostsPage() {
     setBusyId(id);
     try {
       const token = await getAccessTokenSilently();
-      await marketApi.deletePost(token, id);
+      await deletePost(token, id);
       window.location.reload(); // ✅ refresh literal
     } catch (e: any) {
       alert(e.message ?? "Could not delete post");

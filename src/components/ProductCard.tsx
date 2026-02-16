@@ -9,7 +9,7 @@ export function ProductCard({ product }: { product: Product }) {
     : "/placeholder.png";
 
   return (
-    <Card className="h-full bg-card">
+    <Card className="h-full bg-ca">
       <CardContent className="p-4 flex flex-col gap-3">
         <img
           src={imageSrc}

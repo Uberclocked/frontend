@@ -12,35 +12,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { marketApi } from "@/services/Market";
+import { createPost } from "@/services/Market";
+import { useAuth0 } from "@auth0/auth0-react";
+import type { Component } from "@/pages/builder/types/Component";
 
 interface Props {
-  token: string;
-  onSuccess?: () => void;
+  components: Component[]
 }
-
-type SlotKey =
-  | "CPU"
-  | "MOTHERBOARD"
-  | "COOLER"
-  | "RAM"
-  | "GPU"
-  | "SD"
-  | "PSU"
-  | "CASE";
-
-type Slot = { key: SlotKey; label: string; componentSkuPrefix: string };
-
-const SLOTS: Slot[] = [
-  { key: "CPU", label: "CPU", componentSkuPrefix: "CPU" },
-  { key: "MOTHERBOARD", label: "Motherboard", componentSkuPrefix: "MOTHERBOARD" },
-  { key: "COOLER", label: "Cooler", componentSkuPrefix: "COOL" },
-  { key: "RAM", label: "RAM", componentSkuPrefix: "RAM" },
-  { key: "GPU", label: "GPU", componentSkuPrefix: "GPU" },
-  { key: "SD", label: "Storage", componentSkuPrefix: "SD" },
-  { key: "PSU", label: "Power Supply", componentSkuPrefix: "PSU" },
-  { key: "CASE", label: "Case", componentSkuPrefix: "CASE" },
-];
 
 function sanitizePriceInput(raw: string) {
   let v = raw.replace(/[^\d.]/g, "");
@@ -51,14 +29,13 @@ function sanitizePriceInput(raw: string) {
   return v;
 }
 
-export default function PostForm({ token, onSuccess }: Props) {
+export default function PostForm({ components }: Props) {
+  const { getAccessTokenSilently } = useAuth0(); // <-- top level
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState<SlotKey | "">("");
+  const [category, setCategory] = useState<Component | null>(components[0]);
   const [price, setPrice] = useState<string>("");
   const [description, setDescription] = useState("");
-
   const [imageFile, setImageFile] = useState<File | null>(null);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -92,20 +69,25 @@ export default function PostForm({ token, onSuccess }: Props) {
     }
 
     try {
-      await marketApi.createPost(token, {
-        title: title.trim(),
-        category,
-        price: numericPrice,
-        description: description.trim(),
-      }, imageFile);
+      const token = await getAccessTokenSilently(); // use here safely
+
+      await createPost(
+        token,
+        {
+          title: title.trim(),
+          component: category.display_name,
+          price: numericPrice,
+          description: description.trim(),
+        },
+        imageFile,
+      );
 
       alert("Post created!");
       setTitle("");
-      setCategory("");
+      setCategory(null);
       setPrice("");
       setDescription("");
       setImageFile(null);
-      onSuccess?.();
     } catch (err: any) {
       setError(err.message || "Error creating post");
     } finally {
@@ -114,7 +96,7 @@ export default function PostForm({ token, onSuccess }: Props) {
   }
 
   return (
-    <Card className="w-full max-w-md rounded-2xl border border-gray-800 bg-gray-900 p-5">
+    <Card className="max-h-full w-full max-w-md rounded-2xl border p-5 overflow-scroll">
       <form onSubmit={handleSubmit} className="grid gap-3">
         <div className="grid gap-1.5">
           <Label className="text-sm">Title</Label>
@@ -129,23 +111,29 @@ export default function PostForm({ token, onSuccess }: Props) {
 
         <div className="grid gap-1.5">
           <Label className="text-sm">Category</Label>
-
-          <Select value={category} onValueChange={(v) => setCategory(v as SlotKey)}>
+          <Select
+            value={category?.id ?? ""}
+            onValueChange={(v) => {
+              const found = components.find((c) => c.id === v);
+              setCategory(found ?? null);
+            }}
+          >
             <SelectTrigger className={`${field} h-9`}>
               <SelectValue placeholder="Select a category..." />
             </SelectTrigger>
 
             <SelectContent className="border">
-              {SLOTS.map((s) => (
+              {components.map((component) => (
                 <SelectItem
-                  key={s.key}
-                  value={s.key}
+                  key={component.id}
+                  value={component.id} // match this with onValueChange
                 >
-                  {s.label}
+                  {component.display_name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
+
         </div>
 
         <div className="grid gap-1.5">
@@ -193,7 +181,7 @@ export default function PostForm({ token, onSuccess }: Props) {
           />
 
           {previewUrl && (
-            <div className="mt-2 rounded-2xl border border-gray-800 bg-gray-950 p-3">
+            <div className="mt-2 rounded-2xl border p-3">
               <img
                 src={previewUrl}
                 alt="preview"

@@ -1,14 +1,13 @@
 import { Outlet } from "react-router-dom";
-import NavBar from "../NavBar";
-
+import NavBar from "../common/navbar/NavBar";
 
 function NavBarLayout() {
   return (
-    <div className="min-h-screen max-h-screen flex flex-col">
+    <div className="w-full h-full flex flex-col">
       <header className="shrink-0 pointer-events-auto">
         <NavBar />
       </header>
-      <main className="flex-1 overflow-auto">
+      <main className="flex flex-1 min-h-0">
         <Outlet />
       </main>
       <footer className="shrink-0 text-sm text-muted-foreground px-4 py-2 border-t bg-background">
