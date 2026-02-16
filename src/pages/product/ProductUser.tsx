@@ -95,8 +95,8 @@ export default function ProductsUser() {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto w-full p-6 space-y-8">
+    <div className="min-w-screen overflow-y-scroll">
+      <div className="min-w-screen mx-auto w-full p-6 space-y-8">
         <div className="rounded-xl p-6 grid gap-4 md:grid-cols-5">
           <Select
             value={filters.componentSkuPrefix}
