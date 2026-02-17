@@ -3,8 +3,9 @@ import type { Props } from "./CartItem.types";
 
 function CartItem({ item, updating, changeQuantityAbs, removeItem, navigate }: Props) {
   const isCustomPc = item.components && Object.keys(item.components).length > 0;
-  const imageSrc = isCustomPc ? "" : item.image ? `data:image/jpeg;base64,${item.image}` : "/placeholder.png";
-  const isUpdating = updating[item.id];
+  const imageSrc = item.image
+      ? `data:image/jpeg;base64,${item.image}`
+      : "/placeholder.png";  const isUpdating = updating[item.id];
 
   return (
     <div
@@ -36,7 +37,7 @@ function CartItem({ item, updating, changeQuantityAbs, removeItem, navigate }: P
               </div>
 
               <button
-                onClick={() => navigate(`/pc-builder/${item.id}`)}
+                onClick={() => navigate(`/build/${item.id}`)}
                 className="w-fit px-3 py-2 rounded-xl"
               >
                 Modify PC

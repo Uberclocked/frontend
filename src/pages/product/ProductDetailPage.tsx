@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +28,14 @@ export default function ProductDetailPage() {
   const [message, setMessage] = useState("");
 
   const productId = skuPrefix ?? ""; // en tu backend usás String, acá mandamos skuPrefix
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const returnTo = (location.state as any)?.returnTo as string | undefined;
+  const builderState = (location.state as any)?.builderState as
+      | { components: Record<string, string>; selectedComponentSku?: string }
+      | undefined;
 
   async function load() {
     if (!skuPrefix) return;
@@ -156,6 +164,27 @@ export default function ProductDetailPage() {
               </span>{" "}
               ({rating.count} reviews)
             </p>
+          )}
+
+          {returnTo && (
+              <Button
+                  variant="outline"
+                  className="w-full mt-3"
+                  onClick={() => {
+                    // guardamos el draft por si acaso
+                    if (builderState) {
+                      const key = returnTo.includes("/build/") ? `pc_draft_edit_${returnTo.split("/").pop()}` : "pc_draft_new";
+                      sessionStorage.setItem(key, JSON.stringify({
+                        selectedComponentSku: builderState.selectedComponentSku,
+                        components: builderState.components,
+                      }));
+                    }
+
+                    navigate(returnTo);
+                  }}
+              >
+                Back to PC builder
+              </Button>
           )}
 
           <div className="mt-6">

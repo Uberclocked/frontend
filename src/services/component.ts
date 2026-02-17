@@ -1,4 +1,7 @@
 import type { Component } from "@/pages/builder/types/Component";
+import {fetchWithAuth} from "@/services/api.ts";
+
+const BASE = "http://localhost:8080";
 
 export async function getAll(): Promise<Component[]> {
   const components = [
@@ -29,4 +32,12 @@ export async function getAll(): Promise<Component[]> {
     },
   ] as Component[];
   return components;
+}
+
+
+
+export type ComponentDto = { skuPrefix: string; displayName: string };
+
+export async function getComponents(token: string) {
+  return fetchWithAuth<ComponentDto[]>(`${BASE}/components`, token);
 }
