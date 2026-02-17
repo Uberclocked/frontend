@@ -69,7 +69,7 @@ export function MyProfileForm({ profile, loading, onSave, onDelete, onCancel }: 
           <button
             onClick={() => onSave(form)}
             disabled={loading}
-            className="px-5 py-2 rounded font-semibold bg-blue-500 text-white"
+            className="px-5 py-2 rounded font-semibold bg-primary text-white"
           >
             {loading ? "Saving..." : "Save"}
           </button>

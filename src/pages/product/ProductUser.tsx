@@ -15,8 +15,10 @@ import { addCartItem } from "@/services/Cart";
 import { getFilteredProductsPublic } from "@/services/Product";
 import type { Product } from "@/types/Entities";
 import { Link } from "react-router-dom";
+import {fetchWithAuth} from "@/services/api.ts";
 
 const PAGE_SIZE = 9;
+type ComponentDto = { skuPrefix: string; displayName: string };
 
 export default function ProductsUser() {
   const { getAccessTokenSilently, isAuthenticated, loginWithRedirect } = useAuth0();
@@ -25,12 +27,22 @@ export default function ProductsUser() {
   const [page, setPage] = useState(0);
   const [attributeFilter, setAttributeFilter] = useState("");
   const [addingSku, setAddingSku] = useState<string | null>(null);
+  const [components, setComponents] = useState<ComponentDto[]>([]);
 
   const [filters, setFilters] = useState<Record<string, string>>({
     componentSkuPrefix: "ALL",
     minPrice: "",
     maxPrice: "",
   });
+
+  function sanitizePositiveNumber(raw: string) {
+    let v = raw.replace(/[^\d.]/g, "");
+    const parts = v.split(".");
+    if (parts.length > 2) v = parts[0] + "." + parts.slice(1).join("");
+    const [intPart, decPart] = v.split(".");
+    if (decPart !== undefined) v = intPart + "." + decPart.slice(0, 2);
+    return v;
+  }
 
   function handleAttributeChange(value: string) {
     setAttributeFilter(value);
@@ -41,6 +53,28 @@ export default function ProductsUser() {
     });
     setFilters((prev) => ({ ...prev, ...map }));
   }
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setComponents([]);
+      return;
+    }
+
+    (async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const data = await fetchWithAuth<ComponentDto[]>(
+            "http://localhost:8080/components",
+            token
+        );
+        setComponents(data);
+      } catch (e) {
+        console.error("components fetch failed:", e);
+        setComponents([]);
+      }
+    })();
+  }, [isAuthenticated, getAccessTokenSilently]);
+
 
   useEffect(() => {
     (async () => {
@@ -105,27 +139,36 @@ export default function ProductsUser() {
             <SelectTrigger>
               <SelectValue placeholder="Component" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="border bg-background text-foreground shadow-md backdrop-blur-none">
               <SelectItem value="ALL">All</SelectItem>
-              <SelectItem value="CPU">CPU</SelectItem>
-              <SelectItem value="GPU">GPU</SelectItem>
-              <SelectItem value="RAM">RAM</SelectItem>
-              <SelectItem value="MOTHERBOARD">MOTHERBOARD</SelectItem>
+              {components.map((c) => (
+                  <SelectItem key={c.skuPrefix} value={c.skuPrefix}>
+                    {c.displayName}
+                  </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
           <Input
-            type="number"
-            placeholder="Min price"
-            value={filters.minPrice}
-            onChange={(e) => updateFilter("minPrice", e.target.value)}
+              type="text"
+              inputMode="decimal"
+              placeholder="Min price"
+              value={filters.minPrice}
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-"].includes(e.key)) e.preventDefault();
+              }}
+              onChange={(e) => updateFilter("minPrice", sanitizePositiveNumber(e.target.value))}
           />
 
           <Input
-            type="number"
-            placeholder="Max price"
-            value={filters.maxPrice}
-            onChange={(e) => updateFilter("maxPrice", e.target.value)}
+              type="text"
+              inputMode="decimal"
+              placeholder="Max price"
+              value={filters.maxPrice}
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-"].includes(e.key)) e.preventDefault();
+              }}
+              onChange={(e) => updateFilter("maxPrice", sanitizePositiveNumber(e.target.value))}
           />
 
           <Input

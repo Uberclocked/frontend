@@ -22,6 +22,7 @@ import ProductsUser from "@/pages/product/ProductUser";
 import MyCartPage from "@/pages/me/cart/MyCart";
 import MyPurchasesPage from "@/pages/me/purchases/MyPurchasesPage";
 import MyProfile from "@/pages/me/profile/MyProfile";
+import PostInterestedPage from "@/pages/posts/PostInterestedPage";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,7 @@ export const router = createBrowserRouter([
               { path: "reviews/me", element: <MyReviewsPage /> },
             ],
           },
+          { path: "posts/:id/interested", element: <PostInterestedPage /> },
         ],
       },
       {

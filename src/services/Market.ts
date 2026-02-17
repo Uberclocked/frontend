@@ -139,6 +139,15 @@ export async function getInterestedInfo(
   );
 }
 
+export async function hasMyInterest(token: string, postId: string) {
+  const res = await fetch(`${BASE}/posts/${postId}/interest/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!res.ok) throw new Error("Could not check interest");
+  return (await res.json()) as boolean;
+}
+
 export async function getAllPostsAdmin(
   token: string
 ): Promise<PostResponseDto[]> {
@@ -147,4 +156,3 @@ export async function getAllPostsAdmin(
     token
   );
 }
-

@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+import {useEffect, useMemo, useState} from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,12 +14,9 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { createPost } from "@/services/Market";
-import { useAuth0 } from "@auth0/auth0-react";
-import type { Component } from "@/pages/builder/types/Component";
+import {fetchWithAuth} from "@/services/api.ts";
 
-interface Props {
-  components: Component[]
-}
+type ComponentDto = { skuPrefix: string; displayName: string };
 
 function sanitizePriceInput(raw: string) {
   let v = raw.replace(/[^\d.]/g, "");
@@ -29,10 +27,11 @@ function sanitizePriceInput(raw: string) {
   return v;
 }
 
-export default function PostForm({ components }: Props) {
-  const { getAccessTokenSilently } = useAuth0(); // <-- top level
+export default function PostForm() {
+  const { getAccessTokenSilently } = useAuth0();
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState<Component | null>(components[0]);
+  const [components, setComponents] = useState<ComponentDto[]>([]);
+  const [category, setCategory] = useState<ComponentDto | null>(null);
   const [price, setPrice] = useState<string>("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -48,6 +47,18 @@ export default function PostForm({ components }: Props) {
     if (!imageFile) return null;
     return URL.createObjectURL(imageFile);
   }, [imageFile]);
+
+  useEffect(() => {
+    (async () => {
+      const token = await getAccessTokenSilently();
+      const data = await fetchWithAuth<ComponentDto[]>(
+          "http://localhost:8080/components",
+          token
+      );
+      setComponents(data);
+      setCategory(data[0] ?? null);
+    })();
+  }, [getAccessTokenSilently]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -69,13 +80,13 @@ export default function PostForm({ components }: Props) {
     }
 
     try {
-      const token = await getAccessTokenSilently(); // use here safely
+      const token = await getAccessTokenSilently();
 
       await createPost(
         token,
         {
           title: title.trim(),
-          component: category.display_name,
+          component: category.skuPrefix,
           price: numericPrice,
           description: description.trim(),
         },
@@ -112,24 +123,18 @@ export default function PostForm({ components }: Props) {
         <div className="grid gap-1.5">
           <Label className="text-sm">Category</Label>
           <Select
-            value={category?.id ?? ""}
-            onValueChange={(v) => {
-              const found = components.find((c) => c.id === v);
-              setCategory(found ?? null);
-            }}
+              value={category?.skuPrefix ?? ""}
+              onValueChange={(v) => setCategory(components.find(c => c.skuPrefix === v) ?? null)}
           >
             <SelectTrigger className={`${field} h-9`}>
               <SelectValue placeholder="Select a category..." />
             </SelectTrigger>
 
-            <SelectContent className="border">
-              {components.map((component) => (
-                <SelectItem
-                  key={component.id}
-                  value={component.id} // match this with onValueChange
-                >
-                  {component.display_name}
-                </SelectItem>
+            <SelectContent className="border bg-background text-foreground shadow-md backdrop-blur-none">
+              {components.map((c) => (
+                  <SelectItem key={c.skuPrefix} value={c.skuPrefix}>
+                    {c.displayName}
+                  </SelectItem>
               ))}
             </SelectContent>
           </Select>

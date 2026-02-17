@@ -139,7 +139,7 @@ export default function EditProductDialog({
           <SelectTrigger className="border-none focus:ring-0">
             <SelectValue placeholder="Component" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="border bg-background text-foreground shadow-md backdrop-blur-none">
             {components.map(c => (
               <SelectItem key={c.skuPrefix} value={c.skuPrefix}>
                 {c.displayName}

@@ -1,7 +1,10 @@
-import { Badge } from "@/components/ui/badge";
-import type { Props } from "./PostCard.types";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+import type { Props } from "./PostCard.types";
+
 
 const card = "rounded-2xl p-6 border";
 
@@ -10,7 +13,8 @@ function statusBadgeClass(status: string) {
   return "text-sm px-3 py-1";
 }
 
-function PostCard({ post, imageUrl, isOwner, isBusy, onInterested }: Props) {
+function PostCard({ post, imageUrl, isOwner, isBusy, isInterested, onInterested }: Props) {
+  const disabled = isOwner || isBusy || isInterested || post.status !== "ACTIVE";
 
   return (
     <div className={card}>
@@ -54,11 +58,8 @@ function PostCard({ post, imageUrl, isOwner, isBusy, onInterested }: Props) {
             <Link to={`/posts/${post.id}`}>Detail</Link>
           </Button>
 
-          <Button
-            onClick={() => onInterested(post)}
-            disabled={isBusy || post.status !== "ACTIVE" || isOwner}
-          >
-            {isOwner ? "Your post" : isBusy ? "Saving..." : "I'm interested"}
+          <Button onClick={() => onInterested(post)} disabled={disabled}>
+            {isOwner ? "Your post" : isInterested ? "Interested" : isBusy ? "Saving..." : "I'm interested"}
           </Button>
         </div>
       </div>

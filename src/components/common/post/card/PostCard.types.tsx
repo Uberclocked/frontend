@@ -5,5 +5,6 @@ export interface Props {
   imageUrl: string,
   isBusy: boolean,
   isOwner: boolean,
+  isInterested: boolean;
   onInterested: (post: PostResponseDto) => {},
 }

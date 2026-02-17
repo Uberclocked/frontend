@@ -105,26 +105,52 @@ export default function CreateProductDialog({ onCreated }: { onCreated: () => vo
           onChange={e => setName(e.target.value)}
           className="border-none focus:ring-0" />
         <Input
-          placeholder="Price"
-          type="number"
-          value={price}
-          onChange={(e) => {
-            const val = e.target.value.replace(/[^0-9.]/g, "");
-            setPrice(val === "" ? "" : Number(val));
-          }}
-          className="border-none focus:ring-0"
-          inputMode="decimal"
+            placeholder="Price"
+            type="text"
+            inputMode="decimal"
+            value={price}
+            onKeyDown={(e) => {
+              if (["e", "E", "+", "-", ","].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            onChange={(e) => {
+              let val = e.target.value.replace(/[^\d.]/g, "");
+              const parts = val.split(".");
+              if (parts.length > 2) {
+                val = parts[0] + "." + parts.slice(1).join("");
+              }
+              const [intPart, decPart] = val.split(".");
+              if (decPart !== undefined) {
+                val = intPart + "." + decPart.slice(0, 2);
+              }
+              setPrice(val === "" ? "" : Number(val));
+            }}
+            className="border-none focus:ring-0"
         />
         <Input
-          placeholder="Stock"
-          type="number"
-          value={stock}
-          onChange={(e) => {
-            const val = e.target.value.replace(/[^0-9]/g, "");
-            setStock(val === "" ? "" : Number(val));
-          }}
-          className="border-none focus:ring-0"
-          inputMode="numeric"
+            placeholder="Stock"
+            type="text"
+            inputMode="numeric"
+            value={stock}
+            onKeyDown={(e) => {
+              if (["e", "E", "+", "-", ","].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            onChange={(e) => {
+              let val = e.target.value.replace(/[^\d.]/g, "");
+              const parts = val.split(".");
+              if (parts.length > 2) {
+                val = parts[0] + "." + parts.slice(1).join("");
+              }
+              const [intPart, decPart] = val.split(".");
+              if (decPart !== undefined) {
+                val = intPart + "." + decPart.slice(0, 2);
+              }
+              setStock(val === "" ? "" : Number(val));
+            }}
+            className="border-none focus:ring-0"
         />
 
         <Select
@@ -138,7 +164,7 @@ export default function CreateProductDialog({ onCreated }: { onCreated: () => vo
           <SelectTrigger className="border-none focus:ring-0">
             <SelectValue placeholder="Select Component" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="border bg-background text-foreground shadow-md backdrop-blur-none">
             {components.map(c => (
               <SelectItem key={c.skuPrefix} value={c.skuPrefix}>
                 {c.displayName}

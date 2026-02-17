@@ -1,6 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+
 import { User } from "lucide-react";
+
 import useNavBarUserOptionsLogic from "./NavBarUserOptions.hook";
 
 function NavBarUserOptions() {
@@ -21,7 +23,10 @@ function NavBarUserOptions() {
         </div>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-48">
+      <DropdownMenuContent
+          align="end"
+          className="w-48 bg-background text-foreground border shadow-md backdrop-blur-none"
+      >
         <DropdownMenuItem onClick={() => navigate("/profile")}>
           Profile
         </DropdownMenuItem>

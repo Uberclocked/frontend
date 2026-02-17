@@ -156,7 +156,7 @@ export default function AdminReviewsPage() {
                 Filter applied: <span className="font-semibold">{appliedFilter}</span>
               </p>
             ) : (
-              <p className="mt-2 text-sm">No filter applied</p>
+              <p className="mt-2 text-sm"></p>
             )}
           </div>
 

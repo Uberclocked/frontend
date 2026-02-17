@@ -2,14 +2,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 
+import PostCard from "@/components/common/post/card/PostCard";
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { fetchWithAuth } from "@/services/api";
+import { markInterest } from "@/services/Market";
 import type { PostResponseDto, UUID } from "@/types/Market";
 import type { UserDataDto } from "@/types/UserDataDto";
-import PostCard from "@/components/common/post/card/PostCard";
-import { markInterest } from "@/services/Market";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 function PostsFeed() {
   const { posts } = useLoaderData() as { posts: PostResponseDto[] }
@@ -18,23 +18,26 @@ function PostsFeed() {
   const [q, setQ] = useState("");
   const [myUserId, setMyUserId] = useState<UUID | null>(null);
   const [busyId, setBusyId] = useState<UUID | null>(null);
+  const [interestedIds, setInterestedIds] = useState<Set<UUID>>(new Set());
 
   async function handleInterest(post: PostResponseDto) {
-    if (!myUserId || post.sellerId === myUserId) return;
-
     if (!isAuthenticated) {
       await loginWithRedirect({
         authorizationParams: {
-          redirect_uri: window.location.origin + "/posts",
+          redirect_uri: window.location.origin + "/auth-callback",
         },
+        appState: { returnTo: "/posts" },
       });
-      return;
     }
+
+    if (!myUserId || post.sellerId === myUserId) return;
+    if (interestedIds.has(post.id)) return;
 
     setBusyId(post.id);
     try {
       const token = await getAccessTokenSilently();
       await markInterest(token, post.id);
+      setInterestedIds(prev => new Set(prev).add(post.id));
     } catch (e: any) {
       alert(e.message ?? "Could not mark interest");
     } finally {
@@ -114,6 +117,7 @@ function PostsFeed() {
                   imageUrl={img}
                   isOwner={isOwner}
                   isBusy={busyId === p.id}
+                  isInterested={interestedIds.has(p.id)}
                   onInterested={handleInterest}
                 />
               );

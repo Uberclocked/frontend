@@ -33,6 +33,7 @@ export default function PostDetailPage() {
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [myUserId, setMyUserId] = useState<UUID | null>(null);
+  const [isInterested, setIsInterested] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -87,12 +88,13 @@ export default function PostDetailPage() {
   async function onInterested() {
     if (!id) return;
     if (isOwner) return;
+    if (isInterested) return;
 
     setBusy(true);
     try {
       const token = await getAccessTokenSilently();
       await markInterest(token, id);
-      alert("✅ Marked as interested!");
+      setIsInterested(true);
     } catch (e: any) {
       alert(e.message ?? "Could not mark interest");
     } finally {
@@ -155,7 +157,6 @@ export default function PostDetailPage() {
 
         <div className={card}>
           <div className="flex flex-col sm:flex-row items-start justify-between gap-6">
-            {/* Left content */}
             <div className="flex-1 min-w-0 space-y-2">
               <h1 className="text-2xl font-bold">{post.title}</h1>
 
@@ -173,11 +174,11 @@ export default function PostDetailPage() {
 
               <div className="pt-4">
                 <Button
-                  onClick={onInterested}
-                  disabled={busy || post.status !== "ACTIVE" || isOwner}
-                  className="focus-visible:ring-0 focus-visible:ring-offset-0"
+                    onClick={onInterested}
+                    disabled={busy || isInterested || post.status !== "ACTIVE" || isOwner}
+                    className="focus-visible:ring-0 focus-visible:ring-offset-0"
                 >
-                  {isOwner ? "Your post" : busy ? "Saving..." : "I'm interested"}
+                  {isOwner ? "Your post" : isInterested ? "Interested" : busy ? "Saving..." : "I'm interested"}
                 </Button>
               </div>
             </div>

@@ -169,7 +169,7 @@ export default function EditComponentDialog({
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="border bg-background text-foreground shadow-md backdrop-blur-none">
                     <SelectItem value="STRING">STRING</SelectItem>
                     <SelectItem value="INTEGER">INTEGER</SelectItem>
                     <SelectItem value="DECIMAL">DECIMAL</SelectItem>

@@ -11,7 +11,7 @@ export function useNavBarLogic() {
   const roles = user?.["https://uberclocked.com/roles"] ?? [];
 
   const isAdmin =
-    roles.includes("ADMIN") || roles.includes("admin");
+    roles.includes("ADMIN") || roles.includes("Admin") || roles.includes("admin");
 
   return {
     loginWithRedirect,

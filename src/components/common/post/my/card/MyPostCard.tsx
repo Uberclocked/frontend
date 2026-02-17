@@ -1,6 +1,8 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { PostResponseDto, UUID } from "@/types/Market";
-import { Badge } from "lucide-react";
+import {Link} from "react-router-dom";
+
 
 function toImgSrc(image: string | null) {
   if (!image) return null;
@@ -47,10 +49,23 @@ function MyPostCard({ post, busyId, markSold, remove }: { post: PostResponseDto,
         </div>
 
         <div className="flex shrink-0 flex-col gap-2">
-          <Button onClick={() => markSold(post.id)} disabled={busyId === post.id || post.status !== "ACTIVE"} className="focus-visible:ring-0 focus-visible:ring-offset-0">
+          <Button asChild className="focus-visible:ring-0 focus-visible:ring-offset-0">
+            <Link to={`/posts/${post.id}/interested`}>View interested</Link>
+          </Button>
+
+          <Button
+              onClick={() => markSold(post.id)}
+              disabled={busyId === post.id || post.status !== "ACTIVE"}
+              className="focus-visible:ring-0 focus-visible:ring-offset-0"
+          >
             {busyId === post.id ? "Saving..." : "Mark as sold"}
           </Button>
-          <Button variant="destructive" onClick={() => remove(post.id)} disabled={busyId === post.id} className="focus-visible:ring-0 focus-visible:ring-offset-0">
+          <Button
+              variant="destructive"
+              onClick={() => remove(post.id)}
+              disabled={busyId === post.id}
+              className="focus-visible:ring-0 focus-visible:ring-offset-0"
+          >
             {busyId === post.id ? "Deleting..." : "Delete"}
           </Button>
         </div>

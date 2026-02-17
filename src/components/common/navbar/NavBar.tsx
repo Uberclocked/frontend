@@ -28,65 +28,57 @@ export default function NavBar() {
       relative
       z-50
 ">
-      <div className="flex items-center gap-6">
-        < img
-          src={logo}
-          alt="Logo"
-          className="h-16 w-16 object-contain"
-        />
-        <span className="text-xl font-semibold">
-          UberClocked
-        </span>
-      </div >
+        <div className="flex items-center gap-6 shrink-0">
+            <img src={logo} alt="Logo" className="h-16 w-16 object-contain" />
+            <span className="text-xl font-semibold">UberClocked</span>
+        </div>
 
-      <div className="flex items-center gap-8 mr-12">
-        <NavBarButton toUrl="/" text="Home" />
-        <NavBarButton toUrl="/posts" text="Exchange Area" />
-        <NavBarButton toUrl="/market" text="Market" />
-        {isAuthenticated && (
-          <>
-            <NavBarButton toUrl="/build" text="Build PC" />
-            <NavBarButton toUrl="/purchases" text="My purchases" />
-            <NavBarButton toUrl="/cart">
-              <img
-                src={cart}
-                alt="cart"
-                className="h-8 w-8 object-contain"
-              />
-            </NavBarButton>
-            {!isAdmin && (
-              <>
-                <NavBarButton toUrl="/admin/posts" text="Exchange Area (Admin)" />
-                <NavBarButton toUrl="/admin/components" text="Components" />
-                <NavBarButton toUrl="/admin/products" text="Products" />
-                <NavBarButton toUrl="/admin/purchases" text="Purchases" />
-                <NavBarButton toUrl="/admin/reviews" text="Reviews" />
-              </>
+        <div className="flex-1 flex justify-center">
+            <div className="flex items-center gap-8 pr-10">
+                <NavBarButton toUrl="/" text="Home" />
+                <NavBarButton toUrl="/posts" text="Exchange Area" />
+                <NavBarButton toUrl="/market" text="Market" />
+
+                {isAuthenticated && (
+                    <>
+                        <NavBarButton toUrl="/build" text="Build PC" />
+                        <NavBarButton toUrl="/purchases" text="My purchases" />
+
+                        <NavBarButton toUrl="/cart">
+                            <img src={cart} alt="cart" className="h-8 w-8 object-contain" />
+                        </NavBarButton>
+
+                        {isAdmin && (
+                            <>
+                                <NavBarButton toUrl="/admin/posts" text="Exchange Area (Admin)" />
+                                <NavBarButton toUrl="/admin/components" text="Components" />
+                                <NavBarButton toUrl="/admin/products" text="Products" />
+                                <NavBarButton toUrl="/admin/purchases" text="Purchases" />
+                                <NavBarButton toUrl="/admin/reviews" text="Reviews" />
+                            </>
+                        )}
+                    </>
+                )}
+            </div>
+        </div>
+
+        <div className="w-60 flex justify-end items-center shrink-0">
+            {isAuthenticated ? (
+                <NavBarUserOptions />
+            ) : (
+                <Button
+                    variant="ghost"
+                    className="hover:bg-transparent hover:text-primary"
+                    onClick={() =>
+                        loginWithRedirect({
+                            authorizationParams: { redirect_uri: window.location.origin + "/auth-callback" },
+                        })
+                    }
+                >
+                    Login / Sign up
+                </Button>
             )}
-            <NavBarUserOptions />
-          </>
-        )}
-      </div>
-      <div className="flex items-center gap-4">
-        {!isAuthenticated && (
-          <>
-            <Button
-              variant="ghost"
-              className="hover:bg-transparent hover:text-primary"
-              onClick={() =>
-                loginWithRedirect({
-                  authorizationParams: {
-                    redirect_uri:
-                      window.location.origin + "/auth-callback",
-                  },
-                })
-              }
-            >
-              Login / Sign up
-            </Button>
-          </>
-        )}
-      </div>
-    </nav >
+        </div>
+    </nav>
   );
 }
