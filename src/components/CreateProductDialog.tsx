@@ -89,7 +89,8 @@ export default function CreateProductDialog({ onCreated }: { onCreated: () => vo
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button >New Product</Button>
+        <Button className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+        >New Product</Button>
       </DialogTrigger>
 
       <DialogContent className="border-none max-w-3xl">
@@ -220,7 +221,8 @@ export default function CreateProductDialog({ onCreated }: { onCreated: () => vo
           className="border-none focus:ring-0"
         />
 
-        <Button onClick={handleCreate} className="w-full mt-4">
+        <Button className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+          onClick={handleCreate}>
           Create
         </Button>
       </DialogContent>

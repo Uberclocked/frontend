@@ -19,9 +19,8 @@ type UserDataDto = {
 const shell = "min-h-screen p-6";
 const card = "rounded-2xl p-6 border";
 
-function statusBadgeClass(status: string) {
-  if (status === "ACTIVE") return "text-white text-base px-3 py-1";
-  return "text-sm px-3 py-1";
+function statusBadgeClass() {
+  return "bg-orange-500 text-white text-base px-3 py-1";
 }
 
 export default function PostDetailPage() {
@@ -135,8 +134,7 @@ export default function PostDetailPage() {
             <p>Post not found.</p>
           </div>
           <Button
-            asChild
-            className="focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
           >
             <Link to="/posts">Back</Link>
           </Button>
@@ -149,7 +147,8 @@ export default function PostDetailPage() {
     <div className={shell}>
       <div className="mx-auto max-w-3xl space-y-4">
         <div className="flex items-center justify-between">
-          <Button asChild className="focus-visible:ring-0 focus-visible:ring-offset-0">
+          <Button className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+          >
             <Link to="/posts">Back</Link>
           </Button>
 
@@ -160,7 +159,7 @@ export default function PostDetailPage() {
                 </Button>
             )}
 
-            <Badge className={statusBadgeClass(post.status)}>{post.status}</Badge>
+            <Badge className={statusBadgeClass()}>{post.status}</Badge>
           </div>
         </div>
 
@@ -185,7 +184,7 @@ export default function PostDetailPage() {
                 <Button
                     onClick={onInterested}
                     disabled={busy || isInterested || post.status !== "ACTIVE" || isOwner}
-                    className="focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
                 >
                   {isOwner ? "Your post" : isInterested ? "Interested" : busy ? "Saving..." : "I'm interested"}
                 </Button>

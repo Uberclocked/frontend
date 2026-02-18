@@ -86,12 +86,14 @@ export function MyReviewItem({
         <div className="flex gap-2">
           {!isEditing ? (
             <>
-              <Button onClick={() => startEdit(review)}>Modify</Button>
-              <Button variant="destructive" onClick={() => remove(id)}>Delete</Button>
+              <Button className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0" onClick={() => startEdit(review)}>Modify</Button>
+              <Button variant="destructive"
+                      className="bg-red-500/90 hover:bg-red-600 shadow-sm text-white hover:text-white"
+                      onClick={() => remove(id)}>Delete</Button>
             </>
           ) : (
             <>
-              <Button onClick={() => saveEdit(id)}>Save</Button>
+              <Button className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0" onClick={() => saveEdit(id)}>Save</Button>
               <Button variant="destructive" onClick={cancelEdit}>Cancel</Button>
             </>
           )}

@@ -8,9 +8,9 @@ import type { Props } from "./PostCard.types";
 
 const card = "rounded-2xl p-6 border";
 
-function statusBadgeClass(status: string) {
-  if (status === "ACTIVE") return "text-white text-base px-3 py-1";
-  return "text-sm px-3 py-1";
+function statusBadgeClass() {
+  return "bg-orange-500 text-white text-base px-3 py-1";
+
 }
 
 function PostCard({ post, imageUrl, isOwner, isBusy, isInterested, onInterested }: Props) {
@@ -37,7 +37,7 @@ function PostCard({ post, imageUrl, isOwner, isBusy, isInterested, onInterested 
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <p className="font-semibold text-lg">{post.title}</p>
-              <Badge className={statusBadgeClass(post.status)}>{post.status}</Badge>
+              <Badge className={statusBadgeClass()}>{post.status}</Badge>
             </div>
 
             <p className="text-sm opacity-80">
@@ -55,12 +55,13 @@ function PostCard({ post, imageUrl, isOwner, isBusy, isInterested, onInterested 
         <div className="flex shrink-0 flex-col gap-2">
           <Button
             asChild
-            className="focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
           >
             <Link to={`/posts/${post.id}`}>Detail</Link>
           </Button>
 
-          <Button onClick={() => onInterested(post)} disabled={disabled}>
+          <Button className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+                                  onClick={() => onInterested(post)} disabled={disabled}>
             {isOwner ? "Your post" : isInterested ? "Interested" : isBusy ? "Saving..." : "I'm interested"}
           </Button>
         </div>

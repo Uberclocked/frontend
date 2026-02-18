@@ -136,8 +136,9 @@ export default function CreateComponentDialog({
           <div className="space-y-3">
             <div className="flex justify-between items-center">
               <span className="font-semibold">Fields</span>
-              <Button
-                onClick={addField}
+              <Button                             className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0 h-8"
+
+                                                  onClick={addField}
               >
                 Add field
               </Button>
@@ -204,7 +205,7 @@ export default function CreateComponentDialog({
 
           <Button
             onClick={handleSubmit}
-            className="w-full font-semibold"
+            className=" w-full font-semiboldbg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0 h-8"
           >
             Create component
           </Button>

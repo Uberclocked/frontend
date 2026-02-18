@@ -17,11 +17,13 @@ export interface CartItem {
   name: string;
   image: string | null;
   stock: number;
+  availableStock: number;
   quantity: number;
   totalPrice: number;
   productSku?: string | null;
   productName?: string | null;
   components: Record<string, string>;
+  componentsStock: Record<string, number>;
 }
 
 export interface Cart {

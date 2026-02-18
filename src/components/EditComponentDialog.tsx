@@ -108,20 +108,9 @@ export default function EditComponentDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          size="sm"
-          variant="ghost"
-          className="
-                    bg-transparent
-                    hover:bg-transparent
-                    px-2
-                    py-1
-                    text-base
-                    font-semibold
-                "
-        >
+        <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded-md font-semibold transition">
           Modify
-        </Button>
+        </button>
       </DialogTrigger>
 
       <DialogContent className="border max-w-3xl rounded-xl">
@@ -143,7 +132,8 @@ export default function EditComponentDialog({
           <div className="space-y-2">
             <div className="flex justify-between">
               <span className="font-semibold">Fields</span>
-              <Button size="sm" onClick={addField}>
+              <Button size="sm" className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0 h-8"
+                      onClick={addField}>
                 Add
               </Button>
             </div>
@@ -205,7 +195,8 @@ export default function EditComponentDialog({
             ))}
           </div>
 
-          <Button onClick={handleSubmit} className="w-full">
+          <Button onClick={handleSubmit}  className=" w-full hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0 h-8"
+          >
             Save changes
           </Button>
         </div>

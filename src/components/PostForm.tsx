@@ -252,7 +252,7 @@ export default function PostForm({
                       <div className="mt-2 flex justify-end">
                         <Button
                             type="button"
-                            className="h-8"
+                            className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0 h-8"
                             onClick={() => setImageFile(null)}
                         >
                           Remove image
@@ -277,7 +277,7 @@ export default function PostForm({
 
           {error && <p className="text-xs text-destructive">{error}</p>}
 
-          <Button type="submit" disabled={busy} className="h-9 focus-visible:ring-0 focus-visible:ring-offset-0">
+          <Button type="submit" disabled={busy} className="h-9 bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0">
             {busy ? (mode === "edit" ? "Saving..." : "Creating...") : mode === "edit" ? "Save changes" : "Create Post"}
           </Button>
         </form>

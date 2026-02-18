@@ -93,7 +93,9 @@ export default function EditProductDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="font-semibold">Modify</button>
+        <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold text-[14px] px-3 py-1 rounded-lg transition">
+          Modify
+        </button>
       </DialogTrigger>
 
       <DialogContent className="border-none max-w-3xl">
@@ -194,7 +196,8 @@ export default function EditProductDialog({
           }}
         />
 
-        <Button onClick={handleUpdate} className="w-full mt-4">
+        <Button onClick={handleUpdate} className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+        >
           Save changes
         </Button>
       </DialogContent>

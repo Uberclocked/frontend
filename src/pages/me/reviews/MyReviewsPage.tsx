@@ -44,7 +44,8 @@ export default function MyReviewsPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen p-6 flex items-center justify-center">
-        <Button onClick={() => loginWithRedirect()}>Login to view your reviews</Button>
+        <Button className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+                onClick={() => loginWithRedirect()}>Login to view your reviews</Button>
       </div>
     );
   }

@@ -122,7 +122,7 @@ export default function AdminReviewsPage() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen p-6 flex items-center justify-center">
-        <Button
+        <Button className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
           onClick={() => loginWithRedirect()}
         >
           Login
@@ -162,14 +162,16 @@ export default function AdminReviewsPage() {
 
           <div className="flex gap-2">
             <Button
-              onClick={applyFilter}
+                className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+                onClick={applyFilter}
               disabled={loading}
             >
               {loading ? "Loading..." : "Filter"}
             </Button>
 
             <Button
-              onClick={clearFilter}
+                className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
+                onClick={clearFilter}
               disabled={loading}
             >
               Clear
@@ -232,15 +234,14 @@ export default function AdminReviewsPage() {
                       </div>
                     </div>
 
-                    <div className="flex gap-2">
-                      <Button
+                    <Button
                         variant="destructive"
+                        className="bg-red-500/90 hover:bg-red-600 shadow-sm text-white hover:text-white"
                         onClick={() => remove(r.id)}
                         disabled={deletingId === r.id}
-                      >
-                        {deletingId === r.id ? "Deleting..." : "Delete"}
-                      </Button>
-                    </div>
+                    >
+                      {deletingId === r.id ? "Deleting..." : "Delete"}
+                    </Button>
                   </div>
                 </div>
               );

@@ -9,9 +9,8 @@ function toImgSrc(image: string | null) {
   return `data:image/jpeg;base64,${image}`;
 }
 
-function statusBadgeClass(status: string) {
-  if (status === "ACTIVE") return "text-white text-base px-3 py-1";
-  return "text-sm px-3 py-1";
+function statusBadgeClass() {
+  return "bg-orange-500 text-white text-base px-3 py-1";
 }
 
 const card = "rounded-2xl border p-6 cursor-pointer hover:bg-muted/40 transition";
@@ -58,7 +57,7 @@ function MyPostCard({ post, busyId, markSold, remove }: Props) {
             <div className="space-y-2 min-w-0">
               <div className="flex items-center gap-3">
                 <p className="font-semibold text-lg truncate">{post.title}</p>
-                <Badge className={statusBadgeClass(post.status)}>{post.status}</Badge>
+                <Badge className={statusBadgeClass()}>{post.status}</Badge>
               </div>
 
               <p className="text-sm opacity-80">
@@ -75,26 +74,24 @@ function MyPostCard({ post, busyId, markSold, remove }: Props) {
             </div>
           </div>
 
-          {/* ✅ Botones: evitar que el click navegue */}
           <div className="flex shrink-0 flex-col gap-2" onClick={(e) => e.stopPropagation()}>
-            <Button asChild className="focus-visible:ring-0 focus-visible:ring-offset-0">
+            <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0">
               <Link to={`/posts/${post.id}/interested`}>View interested</Link>
             </Button>
 
             <Button
                 onClick={() => markSold(post.id)}
                 disabled={busyId === post.id || post.status !== "ACTIVE"}
-                className="focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
             >
               {busyId === post.id ? "Saving..." : "Mark as sold"}
             </Button>
 
             <Button
-                variant="destructive"
                 onClick={() => remove(post.id)}
                 disabled={busyId === post.id}
-                className="focus-visible:ring-0 focus-visible:ring-offset-0"
-            >
+                variant="destructive"
+                className="bg-red-500/90 hover:bg-red-600 shadow-sm text-white hover:text-white"            >
               {busyId === post.id ? "Deleting..." : "Delete"}
             </Button>
           </div>

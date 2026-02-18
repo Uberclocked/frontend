@@ -1,4 +1,5 @@
 import type { Props } from "./CartItem.types";
+import {Button} from "@/components/ui/button.tsx";
 
 function CartItem({ item, updating, changeQuantityAbs, removeItem, navigate }: Props) {
   const isCustomPc = item.components && Object.keys(item.components).length > 0;
@@ -6,12 +7,15 @@ function CartItem({ item, updating, changeQuantityAbs, removeItem, navigate }: P
   const isUpdating = updating[item.id];
 
   const stock = Number(item.stock ?? 0);
-  const outOfStockForMore = stock > 0 ? item.quantity >= stock : false;
+
+  const nextQty = item.quantity + 1;
+  const availableStock = item.availableStock ?? item.stock ?? 0;
+
+  const outOfStockForMore = nextQty > availableStock;
 
   return (
       <div className="flex flex-col justify-between p-4 rounded-2xl border shadow-sm h-full">
 
-        {/* ==== CONTENIDO SUPERIOR ==== */}
         <div className="flex gap-4">
           <div className="h-20 w-20 rounded-xl overflow-hidden border flex items-center justify-center bg-white">
             <img
@@ -23,12 +27,6 @@ function CartItem({ item, updating, changeQuantityAbs, removeItem, navigate }: P
 
           <div className="flex-1">
             <h3 className="text-lg font-semibold">{item.name}</h3>
-
-            {item.productName && (
-                <p className="text-sm mt-1">
-                  Product: <span>{item.productName}</span>
-                </p>
-            )}
 
             {typeof item.stock !== "undefined" && (
                 <p className="text-sm mt-1 opacity-70">
@@ -42,7 +40,6 @@ function CartItem({ item, updating, changeQuantityAbs, removeItem, navigate }: P
                     Custom PC ({Object.keys(item.components).length} components)
                   </div>
 
-                  {/* 🔘 Botón más grisáceo */}
                   <button
                       onClick={() => navigate(`/build/${item.id}`)}
                       className="w-fit px-3 py-2 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors text-sm"
@@ -52,51 +49,45 @@ function CartItem({ item, updating, changeQuantityAbs, removeItem, navigate }: P
                 </div>
             )}
 
-            {/* ==== CONTROLES DE CANTIDAD ==== */}
             <div className="flex flex-wrap items-center gap-3 mt-4">
               <span className="text-sm">Quantity:</span>
 
               <div className="flex items-center gap-2">
-                <button
+                <Button
+                    className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0 h-8 w-8 p-0"
                     onClick={() => changeQuantityAbs(item.id, item.quantity - 1)}
-                    className="h-9 w-9 rounded-xl border"
                     disabled={isUpdating || item.quantity <= 1}
                 >
                   −
-                </button>
+                </Button>
 
                 <div className="min-w-10 text-center font-semibold">
                   {item.quantity}
                 </div>
 
-                <button
+
+                <Button
+                    className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0 h-8 w-8 p-0"
                     onClick={() => changeQuantityAbs(item.id, item.quantity + 1)}
-                    className="h-9 w-9 rounded-xl border disabled:opacity-40"
                     disabled={isUpdating || outOfStockForMore}
                 >
                   +
-                </button>
+                </Button>
               </div>
 
 
-              <button
+              <Button
+                  className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
                   onClick={() => removeItem(item.id)}
-                  className="ml-auto px-3 py-2 rounded-xl border transition-colors disabled:opacity-40"
-                  disabled={isUpdating}
               >
                 Remove
-              </button>
-
+              </Button>
               <div className="h-4">
-              <span className={`text-xs ${isUpdating ? "opacity-100" : "opacity-0"}`}>
-                Updating…
-              </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* ==== FOOTER ==== */}
         <div className="mt-6 pt-4 border-t flex justify-between items-center">
         <span className="font-semibold text-sm opacity-80">
           Total item

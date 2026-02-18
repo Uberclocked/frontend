@@ -88,7 +88,8 @@ export default function PostInterestedPage() {
         <div className="min-h-screen p-6">
             <div className="mx-auto max-w-4xl space-y-4">
                 <div className="flex items-center justify-between gap-3">
-                    <Button asChild>
+                    <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white">
+
                         <Link to="/posts/me">Back</Link>
                     </Button>
 

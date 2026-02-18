@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import type { ReviewResponseDto } from "../types/Review";
+import {Button} from "@/components/ui/button.tsx";
 
 export default function ReviewCarousel({ reviews }: { reviews: ReviewResponseDto[] }) {
   const [index, setIndex] = useState(0);
@@ -51,18 +52,18 @@ export default function ReviewCarousel({ reviews }: { reviews: ReviewResponseDto
       )}
 
       <div className="mt-4 flex gap-2">
-        <button
-          onClick={() => setIndex((i) => (i - 1 + safe.length) % safe.length)}
-          className="px-3 py-2 rounded-xl border"
+        <Button
+            className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white"
+            onClick={() => setIndex((i) => (i - 1 + safe.length) % safe.length)}
         >
           Prev
-        </button>
-        <button
-          onClick={() => setIndex((i) => (i + 1) % safe.length)}
-          className="px-3 py-2 rounded-xl border"
+        </Button>
+        <Button
+            className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white"
+            onClick={() => setIndex((i) => (i + 1) % safe.length)}
         >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );

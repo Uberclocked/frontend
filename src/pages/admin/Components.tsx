@@ -151,14 +151,17 @@ export default function Components() {
                           onUpdated={loadComponents}
                         />
                         <Button
-                          variant="ghost"
-                          className="
-                                                    h-7
-                                                    px-1
-                                                    text-[18px]
-                                                    font-bold
-                                                "
-                          onClick={() => deleteComponent(c.skuPrefix)}
+                            className="
+                              h-7
+                              px-3
+                              bg-gray-200
+                              hover:bg-gray-300
+                              text-gray-800
+                              font-semibold
+                              rounded-md
+                              transition
+                            "
+                            onClick={() => deleteComponent(c.skuPrefix)}
                         >
                           Delete
                         </Button>

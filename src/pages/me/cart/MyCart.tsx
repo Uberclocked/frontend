@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import usePreference, { useCart } from "./MyCart.hooks";
 import CartItem from "@/components/common/cart/item/CartItem";
 import CartHeader from "@/components/common/cart/header/CartHeader";
+import {Button} from "@/components/ui/button.tsx";
 
 
 export default function MyCartPage() {
@@ -69,10 +70,15 @@ export default function MyCartPage() {
               })}
             </div>
 
-            <div className="flex justify-center">
-              <Link to={`/checkout/${preferenceId}`} className="mt-8 px-6 py-3 rounded-2xl text-lg font-bold">
-                Go to checkout
-              </Link>
+            <div className="flex justify-center mt-8">
+              <Button
+                  asChild
+                  className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0 px-8 py-6 text-lg font-semibold rounded-2xl"
+              >
+                <Link to={`/checkout/${preferenceId}`}>
+                  Go to checkout
+                </Link>
+              </Button>
             </div>
           </>
         )}

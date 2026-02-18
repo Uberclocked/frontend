@@ -10,9 +10,8 @@ import { getAllPostsAdmin, deletePost } from "@/services/Market";
 const shell = "min-h-screen p-6";
 const card = "rounded-2xl border p-6";
 
-function statusBadgeClass(status: string) {
-  if (status === "ACTIVE") return "text-white text-base px-3 py-1";
-  return "text-sm px-3 py-1";
+function statusBadgeClass() {
+  return "bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 text-sm";
 }
 
 function toImgSrc(image: string | null) {
@@ -200,10 +199,10 @@ export default function AdminPostsPage() {
 
                     <div className="flex shrink-0 flex-col gap-2">
                       <Button
-                        variant="destructive"
-                        className="focus-visible:ring-0 focus-visible:ring-offset-0"
-                        onClick={() => remove(p.id)}
-                        disabled={busyId === p.id}
+                          variant="destructive"
+                          className="bg-red-500/90 hover:bg-red-600 shadow-sm text-white hover:text-white"
+                          onClick={() => remove(p.id)}
+                          disabled={busyId === p.id}
                       >
                         {busyId === p.id ? "Deleting..." : "Delete"}
                       </Button>

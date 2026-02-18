@@ -71,11 +71,11 @@ export default function Products() {
                   <td className="flex justify-center gap-4 py-1">
                     <EditProductDialog product={p} onUpdated={loadProducts} />
                     <button
-                      className="font-semibold text-[15px]"
+                      className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold text-[14px] px-3 py-1 rounded-lg transition"
                       onClick={() => deleteProduct(p.skuPrefix)}
-                    >
+                      >
                       Delete
-                    </button>
+                  </button>
                   </td>
                 </tr>
               ))}

@@ -148,10 +148,14 @@ export default function ProductDetailPage() {
     <div className="max-h-full min-w-screen p-6">
       <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="rounded-2xl border p-6">
-          <div className="h-20 w-20 rounded-xl overflow-hidden border flex items-center justify-center bg-white">
-            <img src={imageSrc} alt={product.name} className="h-80 w-full object-contain" />
+          <div className="w-full h-80 rounded-2xl border bg-white flex items-center justify-center p-4 overflow-hidden">
+            <img
+                src={imageSrc}
+                alt={product.name}
+                className="max-h-full max-w-full object-contain"
+                loading="lazy"
+            />
           </div>
-
 
           <h1 className="mt-6 text-3xl font-bold">{product.name}</h1>
           <p className="mt-2 text-xl font-semibold">${Number(product.price).toFixed(2)}</p>
@@ -169,10 +173,8 @@ export default function ProductDetailPage() {
 
           {returnTo && (
               <Button
-                  variant="outline"
-                  className="w-full mt-3"
+                  className="w-full mt-3 bg-orange-500 hover:bg-orange-600 text-white hover:text-white border-none"
                   onClick={() => {
-                    // guardamos el draft por si acaso
                     if (builderState) {
                       const key = returnTo.includes("/build/") ? `pc_draft_edit_${returnTo.split("/").pop()}` : "pc_draft_new";
                       sessionStorage.setItem(key, JSON.stringify({
@@ -180,7 +182,6 @@ export default function ProductDetailPage() {
                         components: builderState.components,
                       }));
                     }
-
                     navigate(returnTo);
                   }}
               >
@@ -190,7 +191,7 @@ export default function ProductDetailPage() {
 
           <div className="mt-6">
             <Button
-              className="w-full"
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white hover:text-white"
               onClick={handleAddToCart}
               disabled={adding}
             >
@@ -241,8 +242,8 @@ export default function ProductDetailPage() {
             />
 
             <Button
-              className="mt-4 w-full"
-              onClick={handleCreateReview}
+                className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white hover:text-white"
+                onClick={handleCreateReview}
               disabled={posting}
             >
               {posting ? "Posting..." : "Submit review"}

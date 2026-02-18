@@ -39,7 +39,6 @@ export default function BuilderPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedComponentSku, setSelectedComponentSku] = useState<string>("");
 
-  // 1:1 con slots (RAM_1, RAM_2, SD_1...)
   const [selectedByComponent, setSelectedByComponent] = useState<Record<string, Product>>({});
 
   const [componentCounts, setComponentCounts] = useState<Record<string, number>>({});
@@ -48,13 +47,11 @@ export default function BuilderPage() {
   const returnTo = isEditMode ? `/build/${itemId}` : `/build`;
   const DRAFT_KEY = isEditMode ? `pc_draft_edit_${itemId}` : `pc_draft_new`;
 
-  // ====== Items para el panel (con key única) ======
   const selectedItems = useMemo(
       () => Object.entries(selectedByComponent).map(([key, product]) => ({ key, product })),
       [selectedByComponent]
   );
 
-  // ====== Payload 1:1 (slots->sku) ======
   const componentsPayload = useMemo(() => {
     const out: Record<string, string> = {};
     for (const [key, product] of Object.entries(selectedByComponent)) {
@@ -63,7 +60,6 @@ export default function BuilderPage() {
     return out;
   }, [selectedByComponent]);
 
-  // ====== Guardar draft temporal SIEMPRE que cambie ======
   useEffect(() => {
     try {
       const draft = {
@@ -72,13 +68,10 @@ export default function BuilderPage() {
       };
       sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
     } catch {
-      // ignore
     }
   }, [DRAFT_KEY, selectedComponentSku, componentsPayload]);
 
-  // ====== Restaurar draft (cuando volvés del producto o refrescás) ======
   useEffect(() => {
-    // si ya hay selección (por preload o por interacción), no pisamos
     if (Object.keys(selectedByComponent).length > 0) return;
 
     const raw = sessionStorage.getItem(DRAFT_KEY);
@@ -124,7 +117,6 @@ export default function BuilderPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [DRAFT_KEY]);
 
-  // ========= Cargar componentes =========
   useEffect(() => {
     if (!isAuthenticated) {
       setComponents([]);
@@ -355,9 +347,14 @@ export default function BuilderPage() {
                   </p>
               )}
 
-              <Button className="w-full" onClick={handleSave} disabled={adding || !canAddCustomPc}>
+              <Button
+                  className="w-full bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0 rounded-2xl"
+                  onClick={handleSave}
+                  disabled={adding || !canAddCustomPc}
+              >
                 {adding ? "Saving..." : isEditMode ? "Save changes" : "Add custom PC to cart"}
               </Button>
+
             </div>
           </div>
         </div>

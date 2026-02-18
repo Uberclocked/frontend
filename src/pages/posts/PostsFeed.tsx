@@ -86,7 +86,7 @@ function PostsFeed() {
             />
 
             <Button
-              className="focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="bg-orange-500 hover:bg-orange-600 text-white hover:text-white focus-visible:ring-0 focus-visible:ring-offset-0"
               onClick={() => {
                 if (!isAuthenticated) return loginWithRedirect();
                 window.location.href = "/posts/create";

@@ -17,7 +17,7 @@ import type { Product } from "@/types/Entities";
 import { Link } from "react-router-dom";
 import {fetchWithAuth} from "@/services/api.ts";
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 8;
 type ComponentDto = { skuPrefix: string; displayName: string };
 
 export default function ProductsUser() {
@@ -131,10 +131,10 @@ export default function ProductsUser() {
   return (
     <div className="min-w-screen overflow-y-scroll">
       <div className="min-w-screen mx-auto w-full p-6 space-y-8">
-        <div className="rounded-xl p-6 grid gap-4 md:grid-cols-5">
+        <div className="rounded-xl p-6 grid gap-3 md:grid-cols-5">
           <Select
-            value={filters.componentSkuPrefix}
-            onValueChange={(v) => updateFilter("componentSkuPrefix", v)}
+              value={filters.componentSkuPrefix}
+              onValueChange={(v) => updateFilter("componentSkuPrefix", v)}
           >
             <SelectTrigger>
               <SelectValue placeholder="Component" />
@@ -171,47 +171,52 @@ export default function ProductsUser() {
               onChange={(e) => updateFilter("maxPrice", sanitizePositiveNumber(e.target.value))}
           />
 
-          <Input
-            placeholder="Attributes (e.g. cores=8,socket=LGA1200)"
-            value={attributeFilter}
-            onChange={(e) => handleAttributeChange(e.target.value)}
-          />
+          {/* Attributes + Clear lado a lado */}
+          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3">
+            <Input
+                placeholder="Attributes (e.g. cores=8,socket=LGA1200)"
+                value={attributeFilter}
+                onChange={(e) => handleAttributeChange(e.target.value)}
+            />
 
-          <Button
-            className="md:col-span-5"
-            onClick={clearFilters}
-          >
-            Clear filters
-          </Button>
+            <Button
+                onClick={clearFilters}
+                className="text-white hover:text-white whitespace-nowrap"
+            >
+              Clear filters
+            </Button>
+          </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 auto-rows-fr">
           {paginated.map((product) => (
-            <div key={product.skuPrefix} className="flex h-full flex-col">
-              <Link to={`/products/${product.skuPrefix}`} className="flex-1">
-                <ProductCard product={product} />
-              </Link>
+              <div key={product.skuPrefix} className="flex h-full flex-col">
+                <Link to={`/products/${product.skuPrefix}`} className="flex-1">
+                  <ProductCard product={product} />
+                </Link>
 
-              <Button
-                className="mt-3 w-full"
-                disabled={addingSku === product.skuPrefix}
-                onClick={() => handleAddToCart(product)}
-              >
-                {addingSku === product.skuPrefix ? "Adding..." : "Add to cart"}
-              </Button>
-            </div>
+                <Button
+                    className="mt-2 w-full text-white hover:text-white"
+                    disabled={addingSku === product.skuPrefix}
+                    onClick={() => handleAddToCart(product)}
+                >
+                  {addingSku === product.skuPrefix ? "Adding..." : "Add to cart"}
+                </Button>
+              </div>
           ))}
         </div>
         <div className="flex justify-center gap-4 pt-6">
           <Button
-            disabled={page === 0}
-            onClick={() => setPage((p) => p - 1)}
+              className="text-white hover:text-white"
+              disabled={page === 0}
+              onClick={() => setPage((p) => p - 1)}
           >
             Previous
           </Button>
 
           <Button
-            disabled={(page + 1) * PAGE_SIZE >= products.length}
-            onClick={() => setPage((p) => p + 1)}
+              className="text-white hover:text-white"
+              disabled={(page + 1) * PAGE_SIZE >= products.length}
+              onClick={() => setPage((p) => p + 1)}
           >
             Next
           </Button>
