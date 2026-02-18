@@ -52,7 +52,7 @@ function CartCouponPanel({
                                 setOpen(false);
                                 setCode("");
                             } catch (e: any) {
-                                setErr(String(e?.message ?? e));
+                                setErr("This coupon can’t be redeemed. Please check the code or try a different one.");
                             } finally {
                                 setLoading(false);
                             }
@@ -81,7 +81,7 @@ function CartCouponPanel({
                                 setCode("");
                                 setOpen(false);
                             } catch (e: any) {
-                                setErr(String(e?.message ?? e));
+                            setErr("This coupon can’t be redeemed. Please check the code or try a different one.");
                             } finally {
                                 setLoading(false);
                             }
