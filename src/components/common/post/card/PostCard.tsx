@@ -21,15 +21,17 @@ function PostCard({ post, imageUrl, isOwner, isBusy, isInterested, onInterested 
       <div className="flex items-start justify-between gap-4">
         <div className="flex gap-4">
           {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt={post.title}
-              className="h-24 w-24 rounded-xl object-cover border"
-            />
+              <div className="h-24 w-24 rounded-xl border bg-white flex items-center justify-center p-2">
+                <img
+                    src={imageUrl}
+                    alt={post.title}
+                    className="max-h-full max-w-full object-contain"
+                />
+              </div>
           ) : (
-            <div className="h-24 w-24 rounded-xl border flex items-center justify-center">
-              <span className="text-xs">No image</span>
-            </div>
+              <div className="h-24 w-24 rounded-xl border flex items-center justify-center bg-white">
+                <span className="text-xs opacity-60">No image</span>
+              </div>
           )}
 
           <div className="space-y-2">

@@ -1,5 +1,12 @@
 import { fetchWithAuth } from "@/services/api";
-import type { PostDataDto, PostInterestDto, PostResponseDto, UserPublicDto, UUID } from "@/types/Market";
+import type {
+  PostDataDto,
+  PostInterestDto,
+  PostResponseDto,
+  PostUpdateDataDto,
+  UserPublicDto,
+  UUID
+} from "@/types/Market";
 
 const BASE = "http://localhost:8080";
 
@@ -67,7 +74,7 @@ export async function getMyPosts(token: string): Promise<PostResponseDto[]> {
 export async function updatePost(
   token: string,
   id: UUID,
-  dto: PostDataDto
+  dto: PostUpdateDataDto
 ): Promise<PostResponseDto> {
   return fetchWithAuth<PostResponseDto>(
     `${BASE}/posts/${id}`,
@@ -156,3 +163,4 @@ export async function getAllPostsAdmin(
     token
   );
 }
+

@@ -6,6 +6,7 @@ import logo from "../../../stories/assets/uberClocked(Only_logo).png";
 import { useNavBarLogic } from "./NavBar.hook";
 import NavBarButton from "./button/NavBarButton";
 import NavBarUserOptions from "./user/option/NavBarUserOption";
+import NavBarUserDropdown from "@/components/common/navbar/user/NavBarUserDropdown.tsx";
 
 export default function NavBar() {
   const {
@@ -35,18 +36,25 @@ export default function NavBar() {
 
         <div className="flex-1 flex justify-center">
             <div className="flex items-center gap-8 pr-10">
-                <NavBarButton toUrl="/" text="Home" />
-                <NavBarButton toUrl="/posts" text="Exchange Area" />
-                <NavBarButton toUrl="/market" text="Market" />
+                {!isAdmin && (
+                    <>
+                        <NavBarButton toUrl="/" text="Home" />
+                        <NavBarButton toUrl="/posts" text="Exchange Area" />
+                        <NavBarButton toUrl="/market" text="Market" />
+                    </>
+                )}
 
                 {isAuthenticated && (
                     <>
-                        <NavBarButton toUrl="/build" text="Build PC" />
-                        <NavBarButton toUrl="/purchases" text="My purchases" />
-
-                        <NavBarButton toUrl="/cart">
-                            <img src={cart} alt="cart" className="h-8 w-8 object-contain" />
-                        </NavBarButton>
+                        {!isAdmin && (
+                            <>
+                                <NavBarButton toUrl="/build" text="Build PC" />
+                                <NavBarButton toUrl="/purchases" text="My purchases" />
+                                <NavBarButton toUrl="/cart">
+                                    <img src={cart} alt="cart" className="h-8 w-8 object-contain" />
+                                </NavBarButton>
+                            </>
+                        )}
 
                         {isAdmin && (
                             <>
@@ -55,11 +63,14 @@ export default function NavBar() {
                                 <NavBarButton toUrl="/admin/products" text="Products" />
                                 <NavBarButton toUrl="/admin/purchases" text="Purchases" />
                                 <NavBarButton toUrl="/admin/reviews" text="Reviews" />
+
+                                <NavBarUserDropdown />
                             </>
                         )}
                     </>
                 )}
             </div>
+
         </div>
 
         <div className="w-60 flex justify-end items-center shrink-0">

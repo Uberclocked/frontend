@@ -16,6 +16,7 @@ export interface CartItem {
   id: string;
   name: string;
   image: string | null;
+  stock: number;
   quantity: number;
   totalPrice: number;
   productSku?: string | null;

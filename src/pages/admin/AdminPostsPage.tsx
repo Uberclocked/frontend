@@ -166,19 +166,18 @@ export default function AdminPostsPage() {
                 <div key={p.id} className={card}>
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex gap-4">
-                      {imgSrc ? (
-                        <img
-                          src={imgSrc}
-                          alt={p.title}
-                          className="h-24 w-24 rounded-xl object-cover border"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="h-24 w-24 rounded-xl border flex items-center justify-center">
-                          <span className="text-xs">No image</span>
-                        </div>
-                      )}
-
+                      <div className="h-24 w-24 rounded-xl border bg-white flex items-center justify-center p-2">
+                        {imgSrc ? (
+                            <img
+                                src={imgSrc}
+                                alt={p.title}
+                                loading="lazy"
+                                className="max-h-full max-w-full object-contain"
+                            />
+                        ) : (
+                            <span className="text-xs opacity-60">No image</span>
+                        )}
+                      </div>
                       <div className="space-y-2">
                         <div className="flex items-center gap-3">
                           <p className="font-semibold text-lg">{p.title}</p>

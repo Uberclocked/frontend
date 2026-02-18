@@ -7,6 +7,7 @@ import PostDetailPage from "@/pages/posts/:id/PostDetailPage";
 import type { RouteObject } from "react-router-dom";
 import MyPosts from "@/pages/me/posts/MyPosts";
 import { CreatePostPageLoader } from "@/pages/posts/create/CreatePost.loader";
+import EditPostPage from "@/pages/posts/edit/EditPostPage.tsx";
 
 export const postsRoutes: RouteObject = {
   path: "posts",
@@ -18,6 +19,7 @@ export const postsRoutes: RouteObject = {
       children: [
         { path: "create", loader: CreatePostPageLoader, element: <CreatePostPage /> },
         { path: "me", element: <MyPosts /> },
+        { path: ":id/edit", element: <EditPostPage /> },
       ],
     },
   ],

@@ -196,11 +196,11 @@ export default function AdminAllPurchasesPage() {
                                 key={it.id}
                                 className="p-3 rounded-xl border flex gap-3"
                               >
-                                <div className="h-16 w-16 rounded-lg overflow-hidden border flex items-center justify-center">
+                                <div className="h-16 w-16 rounded-lg border bg-white flex items-center justify-center p-1">
                                   <img
-                                    src={imageSrc}
-                                    alt={it.productName ?? it.name ?? "Product"}
-                                    className="h-full w-full object-cover"
+                                      src={imageSrc}
+                                      alt={it.productName ?? it.name ?? "Product"}
+                                      className="max-h-full max-w-full object-contain"
                                   />
                                 </div>
 

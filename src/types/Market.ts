@@ -2,21 +2,18 @@ export type UUID = string;
 
 export type PostStatus = "ACTIVE" | "SOLD" | "DELETED";
 
-export interface Post {
-  id: UUID;
+export type PostUpdateDataDto = {
   title: string;
   description: string;
   price: number;
   category: string;
-  status: PostStatus;
-  createdAt: string;
-}
+};
 
 export interface PostDataDto {
   title?: string;
   description?: string;
   price?: number;
-  component?: string;
+  category?: string;
 }
 
 export interface PostResponseDto {

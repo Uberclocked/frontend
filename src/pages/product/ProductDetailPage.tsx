@@ -89,7 +89,7 @@ export default function ProductDetailPage() {
       alert("Added to cart!");
     } catch (e) {
       console.error(e);
-      alert("Could not add to cart");
+      alert("Not enough stock");
     } finally {
       setAdding(false);
     }
@@ -148,9 +148,10 @@ export default function ProductDetailPage() {
     <div className="max-h-full min-w-screen p-6">
       <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="rounded-2xl border p-6">
-          <div className="rounded-2xl bg-white p-4">
+          <div className="h-20 w-20 rounded-xl overflow-hidden border flex items-center justify-center bg-white">
             <img src={imageSrc} alt={product.name} className="h-80 w-full object-contain" />
           </div>
+
 
           <h1 className="mt-6 text-3xl font-bold">{product.name}</h1>
           <p className="mt-2 text-xl font-semibold">${Number(product.price).toFixed(2)}</p>

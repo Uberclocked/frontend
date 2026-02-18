@@ -26,18 +26,16 @@ function ProductList({ products, onSelect }: Props) {
                   onClick={() => onSelect(p)}
               >
                 <div className="flex gap-4 p-4">
-                  <div className="shrink-0">
+                  <div className="h-20 w-20 rounded-xl border bg-white flex items-center justify-center p-1">
                     {imgSrc ? (
                         <img
                             src={imgSrc}
                             alt={name}
-                            className="h-20 w-20 rounded-xl object-cover border"
+                            className="max-h-full max-w-full object-contain"
                             loading="lazy"
                         />
                     ) : (
-                        <div className="h-20 w-20 rounded-xl border flex items-center justify-center text-xs opacity-70">
-                          No image
-                        </div>
+                        <span className="text-xs opacity-60">No image</span>
                     )}
                   </div>
 

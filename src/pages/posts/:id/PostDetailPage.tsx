@@ -51,6 +51,10 @@ export default function PostDetailPage() {
   }, [isAuthenticated, getAccessTokenSilently]);
 
   useEffect(() => {
+    if (post) console.log("POST DETAIL:", post, "category:", post.category);
+  }, [post]);
+
+  useEffect(() => {
     async function loadPost() {
       if (!id) return;
       setLoading(true);
@@ -145,14 +149,19 @@ export default function PostDetailPage() {
     <div className={shell}>
       <div className="mx-auto max-w-3xl space-y-4">
         <div className="flex items-center justify-between">
-          <Button
-            asChild
-            className="focus-visible:ring-0 focus-visible:ring-offset-0"
-          >
+          <Button asChild className="focus-visible:ring-0 focus-visible:ring-offset-0">
             <Link to="/posts">Back</Link>
           </Button>
 
-          <Badge className={statusBadgeClass(post.status)}>{post.status}</Badge>
+          <div className="flex items-center gap-2">
+            {isOwner && (
+                <Button asChild variant="outline" className="focus-visible:ring-0 focus-visible:ring-offset-0">
+                  <Link to={`/posts/${post.id}/edit`}>Edit</Link>
+                </Button>
+            )}
+
+            <Badge className={statusBadgeClass(post.status)}>{post.status}</Badge>
+          </div>
         </div>
 
         <div className={card}>
@@ -185,16 +194,18 @@ export default function PostDetailPage() {
 
             <div className="shrink-0">
               {imgSrc ? (
-                <img
-                  src={imgSrc}
-                  alt={post.title}
-                  loading="lazy"
-                  className="h-28 w-28 rounded-xl object-cover border"
-                />
+                  <div className="h-28 w-28 rounded-xl border bg-white flex items-center justify-center p-2">
+                    <img
+                        src={imgSrc}
+                        alt={post.title}
+                        loading="lazy"
+                        className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
               ) : (
-                <div className="h-28 w-28 rounded-xl border flex items-center justify-center">
-                  <span className="text-xs">No image</span>
-                </div>
+                  <div className="h-28 w-28 rounded-xl border flex items-center justify-center bg-white">
+                    <span className="text-xs opacity-60">No image</span>
+                  </div>
               )}
             </div>
           </div>

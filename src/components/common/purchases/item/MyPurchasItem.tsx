@@ -11,9 +11,13 @@ function MyPurchaseItem({ item }: { item: CartItem }) {
 
   return (
     <div className="p-3 rounded-xl border flex gap-3">
-      <div className="h-16 w-16 rounded-lg overflow-hidden border flex items-center justify-center">
-        <img src={imageSrc} alt={item.productName ?? item.name ?? "Product"} className="h-full w-full object-cover" />
-      </div>
+        <div className="h-16 w-16 rounded-lg border bg-white flex items-center justify-center p-1">
+            <img
+                src={imageSrc}
+                alt={item.productName ?? item.name ?? "Product"}
+                className="max-h-full max-w-full object-contain"
+            />
+        </div>
 
       <div className="flex-1">
         <p className="font-semibold">{item.name}</p>
