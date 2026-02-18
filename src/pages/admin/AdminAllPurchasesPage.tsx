@@ -9,7 +9,7 @@ import type {
   UpdatePurchaseDto,
 } from "@/types/PurchaseDto";
 
-const STATUSES: PurchaseStatus[] = ["CREATED", "PAID", "READY", "DELIVERED", "CANCELLED"];
+const STATUSES: PurchaseStatus[] = ["PAID", "READY", "DELIVERED", "CANCELLED"];
 
 function toDateValue(iso: string | null | undefined) {
   if (!iso) return "";

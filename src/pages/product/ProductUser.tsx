@@ -46,13 +46,29 @@ export default function ProductsUser() {
 
   function handleAttributeChange(value: string) {
     setAttributeFilter(value);
-    const map: Record<string, string> = {};
-    value.split(",").forEach((pair) => {
-      const [key, val] = pair.split("=").map((s) => s.trim());
-      if (key && val) map[key] = val;
+    setPage(0);
+
+    setFilters((prev) => {
+      const baseFilters = {
+        componentSkuPrefix: prev.componentSkuPrefix,
+        minPrice: prev.minPrice,
+        maxPrice: prev.maxPrice,
+      };
+
+      if (!value.trim()) {
+        return baseFilters;
+      }
+
+      const map: Record<string, string> = {};
+      value.split(",").forEach((pair) => {
+        const [key, val] = pair.split("=").map((s) => s.trim());
+        if (key && val) map[key] = val;
+      });
+
+      return { ...baseFilters, ...map };
     });
-    setFilters((prev) => ({ ...prev, ...map }));
   }
+
 
   useEffect(() => {
     if (!isAuthenticated) {
