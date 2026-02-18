@@ -15,6 +15,8 @@ function NavBarUserDropdown() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    const close = () => setOpen(false);
+
     return (
         <div className="relative" ref={ref}>
             <button
@@ -26,24 +28,30 @@ function NavBarUserDropdown() {
 
             {open && (
                 <div className="absolute right-0 mt-2 w-52 bg-white border rounded-xl shadow-lg p-2 z-50 space-y-1">
-                    <Link to="/" className="block px-3 py-2 rounded-lg hover:bg-muted/40">
+                    <Link to="/" onClick={close} className="block px-3 py-2 rounded-lg hover:bg-muted/40">
                         Home
                     </Link>
-                    <Link to="/posts" className="block px-3 py-2 rounded-lg hover:bg-muted/40">
+
+                    <Link to="/posts" onClick={close} className="block px-3 py-2 rounded-lg hover:bg-muted/40">
                         Exchange Area
                     </Link>
-                    <Link to="/market" className="block px-3 py-2 rounded-lg hover:bg-muted/40">
+
+                    <Link to="/market" onClick={close} className="block px-3 py-2 rounded-lg hover:bg-muted/40">
                         Market
                     </Link>
-                    <Link to="/build" className="block px-3 py-2 rounded-lg hover:bg-muted/40">
+
+                    <Link to="/build" onClick={close} className="block px-3 py-2 rounded-lg hover:bg-muted/40">
                         Build PC
                     </Link>
-                    <Link to="/purchases" className="block px-3 py-2 rounded-lg hover:bg-muted/40">
+
+                    <Link to="/purchases" onClick={close} className="block px-3 py-2 rounded-lg hover:bg-muted/40">
                         My purchases
                     </Link>
-                    <Link to="/cart" className="block px-3 py-2 rounded-lg hover:bg-muted/40">
+
+                    <Link to="/cart" onClick={close} className="block px-3 py-2 rounded-lg hover:bg-muted/40">
                         Cart
                     </Link>
+
                 </div>
             )}
         </div>

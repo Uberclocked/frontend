@@ -6,11 +6,15 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Ticket, User } from "lucide-react";
 import useNavBarUserOptionsLogic from "./NavBarUserOptions.hook";
+import {User} from "lucide-react";
 
 function NavBarUserOptions() {
-    const { user, logout, navigate } = useNavBarUserOptionsLogic();
+    const { user, logout, navigate} = useNavBarUserOptionsLogic();
+    const roles = user?.["https://uberclocked.com/roles"] ?? [];
+
+    const isAdmin =
+        roles.includes("ADMIN") || roles.includes("Admin") || roles.includes("admin");
 
     const itemStyle =
         "flex items-center gap-2 border-b last:border-b-0";
@@ -62,7 +66,6 @@ function NavBarUserOptions() {
                 >
                     My coupons
                 </DropdownMenuItem>
-
                 <DropdownMenuItem
                     onClick={() =>
                         logout({

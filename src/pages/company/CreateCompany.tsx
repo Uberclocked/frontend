@@ -1,11 +1,12 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
-
-import CompanyForm from "../../components/CompanyForm.tsx";
+import { useNavigate } from "react-router-dom";
+import CompanyForm from "../../components/CompanyForm";
 
 export default function CreateCompanyPage() {
     const { getAccessTokenSilently, isAuthenticated } = useAuth0();
     const [token, setToken] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -15,20 +16,15 @@ export default function CreateCompanyPage() {
         }
     }, [getAccessTokenSilently, isAuthenticated]);
 
-    const handleSuccess = () => {
-        console.log("Company successfully created!");
-    };
-
-    if (!token) {
-        return <p>Loading authentication...</p>;
-    }
+    if (!isAuthenticated) return <p>You must login</p>;
+    if (!token) return <p>Loading...</p>;
 
     return (
-        <div style={{ padding: "2rem" }}>
-            <h1>Register Company</h1>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <CompanyForm
                 token={token}
-                onSuccess={handleSuccess}
+                onSuccess={() => navigate("/")}
+                onCancel={() => navigate("/")}
             />
         </div>
     );

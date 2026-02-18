@@ -64,7 +64,7 @@ export default function NavBar() {
                                 <NavBarButton toUrl="/admin/promotions" text="Coupons" />
                                 <NavBarButton toUrl="/admin/purchases" text="Purchases" />
                                 <NavBarButton toUrl="/admin/reviews" text="Reviews" />
-
+                                <NavBarButton toUrl="/admin/companies" text="Companies" />
                                 <NavBarUserDropdown />
                             </>
                         )}
