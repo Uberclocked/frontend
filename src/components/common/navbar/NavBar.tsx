@@ -61,6 +61,7 @@ export default function NavBar() {
                                 <NavBarButton toUrl="/admin/posts" text="Exchange Area (Admin)" />
                                 <NavBarButton toUrl="/admin/components" text="Components" />
                                 <NavBarButton toUrl="/admin/products" text="Products" />
+                                <NavBarButton toUrl="/admin/promotions" text="Coupons" />
                                 <NavBarButton toUrl="/admin/purchases" text="Purchases" />
                                 <NavBarButton toUrl="/admin/reviews" text="Reviews" />
 

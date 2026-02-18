@@ -9,7 +9,7 @@ export default function MyPurchasesPage() {
     const { getAccessTokenSilently } = useAuth0();
     const { purchases, loading } = useMyPurchases(getAccessTokenSilently);
 
-    const STATUSES: PurchaseStatus[] = ["CREATED", "PAID", "READY", "DELIVERED", "CANCELLED"];
+    const STATUSES: PurchaseStatus[] = ["PAID", "READY", "DELIVERED", "CANCELLED"];
     const [filter, setFilter] = useState<PurchaseStatus | "ALL">("ALL");
 
     const filtered = useMemo(() => {

@@ -28,6 +28,8 @@ export interface CartItem {
 
 export interface Cart {
   id: string;
+  appliedPromotion?: Promotion | null;
+  discountAmount?: number | null;
   status: "ACTIVE" | "COMPLETED";
   items: CartItem[];
   createdAt: string;
@@ -43,3 +45,13 @@ export interface Purchase {
   pickupDate?: string;
   items: CartItem[];
 }
+
+export type Promotion = {
+  id: string;
+  code: string;
+  discount: number;
+  title?: string;
+  description?: string;
+  startDate?: string;
+  endDate?: string;
+};

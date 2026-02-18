@@ -23,6 +23,7 @@ import MyCartPage from "@/pages/me/cart/MyCart";
 import MyPurchasesPage from "@/pages/me/purchases/MyPurchasesPage";
 import MyProfile from "@/pages/me/profile/MyProfile";
 import PostInterestedPage from "@/pages/posts/PostInterestedPage";
+import CouponsPage from "@/pages/me/promotion/CouponsPage.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,7 @@ export const router = createBrowserRouter([
               { path: "cart", element: <MyCartPage /> },
               { path: "purchases", element: <MyPurchasesPage /> },
               { path: "reviews/me", element: <MyReviewsPage /> },
+              { path: "coupons", element: <CouponsPage /> },
             ],
           },
           { path: "posts/:id/interested", element: <PostInterestedPage /> },

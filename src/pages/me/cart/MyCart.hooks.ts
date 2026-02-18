@@ -3,12 +3,48 @@ import { generatePreference } from "@/services/mp";
 import type { Cart } from "@/types/Entities";
 import { useEffect, useState } from "react";
 
-
+const BASE = "http://localhost:8080";
 
 export function useCart(getToken: () => Promise<string>) {
   const [cart, setCart] = useState<Cart | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [updating, setUpdating] = useState<Record<string, boolean>>({});
+
+  async function applyCoupon(code: string) {
+    const token = await getToken();
+    const res = await fetch(`${BASE}/carts/coupon/apply`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ code }),
+    });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(txt || "Failed to apply coupon");
+    }
+
+    const updated: Cart = await res.json();
+    setCart(updated);
+  }
+
+  async function removeCoupon() {
+    const token = await getToken();
+    const res = await fetch(`${BASE}/carts/coupon/remove`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(txt || "Failed to remove coupon");
+    }
+
+    const updated: Cart = await res.json();
+    setCart(updated);
+  }
 
   async function loadCart() {
     setIsLoading(true);
@@ -43,6 +79,7 @@ export function useCart(getToken: () => Promise<string>) {
       setIsLoading(false);
     }
   }
+
 
   function setLocalQty(itemId: string, qty: number) {
     setCart((prev) => {
@@ -110,7 +147,6 @@ export function useCart(getToken: () => Promise<string>) {
     }
   }
 
-
   return {
     cart,
     updating,
@@ -119,7 +155,9 @@ export function useCart(getToken: () => Promise<string>) {
     loadCart,
     changeQuantityAbs,
     removeItem,
-  }
+    applyCoupon,
+    removeCoupon,
+  };
 }
 
 export default function usePreference(getToken: () => Promise<string>, cart: Cart | null) {
@@ -137,4 +175,5 @@ export default function usePreference(getToken: () => Promise<string>, cart: Car
 
   return preferenceId;
 }
+
 
